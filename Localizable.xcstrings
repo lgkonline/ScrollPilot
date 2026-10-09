@@ -94,6 +94,17 @@
           }
         }
       }
+    },
+    "Toggle natural scrolling" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Natürliches Scrollen umschalten"
+          }
+        }
+      }
     }
   },
   "version" : "1.3"

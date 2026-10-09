@@ -3,6 +3,7 @@ import SwiftUI
 import AppKit
 import Combine
 import ServiceManagement
+import Carbon.HIToolbox
 
 @MainActor
 final class ScrollPilotController: ObservableObject {
@@ -47,6 +48,15 @@ final class ScrollPilotController: ObservableObject {
         menu.addItem(statusMenuItem)
         menu.addItem(NSMenuItem.separator())
         
+        let toggleItem = NSMenuItem(
+            title: String(localized: LocalizedStringResource.toggleNaturalScrolling),
+            action: #selector(toggleScrollingMenuAction),
+            keyEquivalent: "s"
+        )
+        toggleItem.target = self
+        toggleItem.keyEquivalentModifierMask = [.control, .option]
+        menu.addItem(toggleItem)
+        
         launchAtLoginMenuItem = NSMenuItem(
             title: String(localized: LocalizedStringResource.launchAtLogin),
             action: #selector(toggleLaunchAtLogin),
@@ -86,6 +96,10 @@ final class ScrollPilotController: ObservableObject {
         } else {
             toggleScrolling()
         }
+    }
+    
+    @objc private func toggleScrollingMenuAction() {
+        toggleScrolling()
     }
     
     private func updateLoginAtLaunchMenuItem() {
@@ -240,9 +254,103 @@ struct ScrollPilotApp: App {
 
 final class AppDelegate: NSObject, NSApplicationDelegate {
     private var controller: ScrollPilotController?
+    private var globalHotKey: GlobalHotKey?
 
     func applicationDidFinishLaunching(_ notification: Notification) {
         NSApp.setActivationPolicy(.accessory)
         controller = ScrollPilotController()
+        globalHotKey = GlobalHotKey { [weak self] in
+            self?.controller?.toggleScrolling()
+        }
+    }
+}
+
+
+final class GlobalHotKey {
+    private var hotKeyRef: EventHotKeyRef?
+    private var eventHandler: EventHandlerRef?
+    private let onPress: () -> Void
+
+    init(onPress: @escaping () -> Void) {
+        self.onPress = onPress
+
+        var eventType = EventTypeSpec(
+            eventClass: OSType(kEventClassKeyboard),
+            eventKind: UInt32(kEventHotKeyPressed)
+        )
+
+        let handlerStatus = InstallEventHandler(
+            GetApplicationEventTarget(),
+            { _, event, userData -> OSStatus in
+                guard let event, let userData else {
+                    return noErr
+                }
+
+                var hotKeyID = EventHotKeyID()
+
+                let result = GetEventParameter(
+                    event,
+                    EventParamName(kEventParamDirectObject),
+                    EventParamType(typeEventHotKeyID),
+                    nil,
+                    MemoryLayout<EventHotKeyID>.size,
+                    nil,
+                    &hotKeyID
+                )
+
+                guard result == noErr, hotKeyID.id == 1 else {
+                    return noErr
+                }
+
+                let hotKey = Unmanaged<GlobalHotKey>
+                    .fromOpaque(userData)
+                    .takeUnretainedValue()
+
+                DispatchQueue.main.async {
+                    hotKey.onPress()
+                }
+
+                return noErr
+            },
+            1,
+            &eventType,
+            Unmanaged.passUnretained(self).toOpaque(),
+            &eventHandler
+        )
+
+        guard handlerStatus == noErr else {
+            print("ScrollPilot: Event-Handler konnte nicht installiert werden.")
+            return
+        }
+
+        let hotKeyID = EventHotKeyID(
+            signature: OSType(0x53435250), // "SCRP"
+            id: 1
+        )
+
+        let modifiers = UInt32(controlKey | optionKey)
+
+        let hotKeyStatus = RegisterEventHotKey(
+            UInt32(kVK_ANSI_S),
+            modifiers,
+            hotKeyID,
+            GetApplicationEventTarget(),
+            0,
+            &hotKeyRef
+        )
+
+        if hotKeyStatus != noErr {
+            print("ScrollPilot: Shortcut konnte nicht registriert werden. Code: \(hotKeyStatus)")
+        }
+    }
+
+    deinit {
+        if let hotKeyRef {
+            UnregisterEventHotKey(hotKeyRef)
+        }
+
+        if let eventHandler {
+            RemoveEventHandler(eventHandler)
+        }
     }
 }
