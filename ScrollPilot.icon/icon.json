@@ -6,11 +6,13 @@
     {
       "layers" : [
         {
+          "blend-mode" : "normal",
           "fill" : "system-light",
-          "image-name" : "Image.svg",
-          "name" : "Image",
+          "hidden" : false,
+          "image-name" : "SVG Image.svg",
+          "name" : "SVG Image",
           "position" : {
-            "scale" : 7.46,
+            "scale" : 50.93,
             "translation-in-points" : [
               0,
               0
