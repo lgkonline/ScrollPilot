@@ -2,6 +2,7 @@
 import SwiftUI
 import AppKit
 import Combine
+import ServiceManagement
 
 @MainActor
 final class ScrollPilotController: ObservableObject {
@@ -19,6 +20,8 @@ final class ScrollPilotController: ObservableObject {
         action: nil,
         keyEquivalent: ""
     )
+    
+    private var launchAtLoginMenuItem: NSMenuItem!
 
     init() {
         refreshSetting()
@@ -43,6 +46,15 @@ final class ScrollPilotController: ObservableObject {
         }
 
         menu.addItem(statusMenuItem)
+        menu.addItem(NSMenuItem.separator())
+        
+        launchAtLoginMenuItem = NSMenuItem(
+            title: String(localized: LocalizedStringResource.launchAtLogin),
+            action: #selector(toggleLaunchAtLogin),
+            keyEquivalent: ""
+        )
+        launchAtLoginMenuItem.target = self
+        menu.addItem(launchAtLoginMenuItem)
         menu.addItem(NSMenuItem.separator())
 
         let refreshItem = NSMenuItem(
@@ -74,6 +86,35 @@ final class ScrollPilotController: ObservableObject {
             statusItem.menu = nil
         } else {
             toggleScrolling()
+        }
+    }
+    
+    private func updateLoginAtLaunchMenuItem() {
+        launchAtLoginMenuItem?.state =
+            SMAppService.mainApp.status == .enabled ? .on : .off
+    }
+
+    @objc private func toggleLaunchAtLogin() {
+        let service = SMAppService.mainApp
+
+        do {
+            switch service.status {
+            case .enabled:
+                try service.unregister()
+
+            case .requiresApproval:
+                SMAppService.openSystemSettingsLoginItems()
+                return
+
+            default:
+                try service.register()
+            }
+
+            updateLoginAtLaunchMenuItem()
+        } catch {
+            status = "Automatischer Start fehlgeschlagen: \(error.localizedDescription)"
+            updateMenuBar()
+            updateLoginAtLaunchMenuItem()
         }
     }
 

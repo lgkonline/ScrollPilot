@@ -12,6 +12,17 @@
         }
       }
     },
+    "Launch at login" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bei Anmeldung starten"
+          }
+        }
+      }
+    },
     "Natural scrolling is off." : {
       "extractionState" : "manual",
       "localizations" : {
