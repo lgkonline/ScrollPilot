@@ -8,11 +8,13 @@
 
 /* Begin PBXBuildFile section */
 		F6DACF1230793C8A00941337 /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = F6DACF1130793C8A00941337 /* Localizable.xcstrings */; };
+		F6DACF1630794D5D00941337 /* ScrollPilot.icon in Resources */ = {isa = PBXBuildFile; fileRef = F6DACF1530794D5D00941337 /* ScrollPilot.icon */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		000000000000000000000120 /* ScrollPilot.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ScrollPilot.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F6DACF1130793C8A00941337 /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
+		F6DACF1530794D5D00941337 /* ScrollPilot.icon */ = {isa = PBXFileReference; lastKnownFileType = folder.iconcomposer.icon; path = ScrollPilot.icon; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -37,6 +39,7 @@
 			children = (
 				F6DACF1130793C8A00941337 /* Localizable.xcstrings */,
 				000000000000000000000010 /* ScrollPilot */,
+				F6DACF1530794D5D00941337 /* ScrollPilot.icon */,
 				000000000000000000000020 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -110,6 +113,7 @@
 			isa = PBXResourcesBuildPhase;
 			files = (
 				F6DACF1230793C8A00941337 /* Localizable.xcstrings in Resources */,
+				F6DACF1630794D5D00941337 /* ScrollPilot.icon in Resources */,
 			);
 		};
 /* End PBXResourcesBuildPhase section */
@@ -260,11 +264,13 @@
 		000000000000000111000000 /* Debug configuration for PBXNativeTarget "ScrollPilot" */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = ScrollPilot;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				ENABLE_APP_SANDBOX = NO;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphoneos*]" = YES;
@@ -296,11 +302,13 @@
 		000000000000000112000000 /* Release configuration for PBXNativeTarget "ScrollPilot" */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = ScrollPilot;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				ENABLE_APP_SANDBOX = NO;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphoneos*]" = YES;
