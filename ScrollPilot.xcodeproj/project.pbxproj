@@ -9,21 +9,15 @@
 /* Begin PBXBuildFile section */
 		F6DACF1230793C8A00941337 /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = F6DACF1130793C8A00941337 /* Localizable.xcstrings */; };
 		F6DACF1630794D5D00941337 /* ScrollPilot.icon in Resources */ = {isa = PBXBuildFile; fileRef = F6DACF1530794D5D00941337 /* ScrollPilot.icon */; };
+		F6DACF1830794F3500941337 /* ScrollPilot.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6DACF1730794F3500941337 /* ScrollPilot.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		000000000000000000000120 /* ScrollPilot.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ScrollPilot.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F6DACF1130793C8A00941337 /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
 		F6DACF1530794D5D00941337 /* ScrollPilot.icon */ = {isa = PBXFileReference; lastKnownFileType = folder.iconcomposer.icon; path = ScrollPilot.icon; sourceTree = "<group>"; };
+		F6DACF1730794F3500941337 /* ScrollPilot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScrollPilot.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
-
-/* Begin PBXFileSystemSynchronizedRootGroup section */
-		000000000000000000000010 /* ScrollPilot */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			path = ScrollPilot;
-			sourceTree = "<group>";
-		};
-/* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
 		000000000000000130000000 /* Frameworks */ = {
@@ -38,8 +32,8 @@
 			isa = PBXGroup;
 			children = (
 				F6DACF1130793C8A00941337 /* Localizable.xcstrings */,
-				000000000000000000000010 /* ScrollPilot */,
 				F6DACF1530794D5D00941337 /* ScrollPilot.icon */,
+				F6DACF1730794F3500941337 /* ScrollPilot.swift */,
 				000000000000000000000020 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -64,9 +58,6 @@
 				000000000000000140000000 /* Resources */,
 			);
 			buildRules = (
-			);
-			fileSystemSynchronizedGroups = (
-				000000000000000000000010 /* ScrollPilot */,
 			);
 			name = ScrollPilot;
 			productName = MyApp;
@@ -122,6 +113,7 @@
 		000000000000000120000000 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			files = (
+				F6DACF1830794F3500941337 /* ScrollPilot.swift in Sources */,
 			);
 		};
 /* End PBXSourcesBuildPhase section */
