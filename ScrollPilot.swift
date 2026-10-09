@@ -41,7 +41,6 @@ final class ScrollPilotController: ObservableObject {
             button.target = self
             button.action = #selector(handleClick(_:))
 
-            // Linksklick schaltet um, Rechtsklick öffnet das Menü.
             button.sendAction(on: [.leftMouseUp, .rightMouseUp])
         }
 
