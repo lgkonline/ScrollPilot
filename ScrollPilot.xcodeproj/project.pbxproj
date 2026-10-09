@@ -6,8 +6,13 @@
 	objectVersion = 90;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		F6DACF1230793C8A00941337 /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = F6DACF1130793C8A00941337 /* Localizable.xcstrings */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXFileReference section */
 		000000000000000000000120 /* ScrollPilot.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ScrollPilot.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		F6DACF1130793C8A00941337 /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -30,6 +35,7 @@
 		000000000000000000000001 = {
 			isa = PBXGroup;
 			children = (
+				F6DACF1130793C8A00941337 /* Localizable.xcstrings */,
 				000000000000000000000010 /* ScrollPilot */,
 				000000000000000000000020 /* Products */,
 			);
@@ -85,6 +91,7 @@
 			knownRegions = (
 				en,
 				Base,
+				de,
 			);
 			mainGroup = 000000000000000000000001;
 			minimizedProjectReferenceProxies = 1;
@@ -102,6 +109,7 @@
 		000000000000000140000000 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			files = (
+				F6DACF1230793C8A00941337 /* Localizable.xcstrings in Resources */,
 			);
 		};
 /* End PBXResourcesBuildPhase section */
@@ -178,6 +186,7 @@
 				PROJECT_UNIQUE_VALUE = SA5RY454;
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				TVOS_DEPLOYMENT_TARGET = 27.0;
 				WATCHOS_DEPLOYMENT_TARGET = 27.0;
@@ -241,6 +250,7 @@
 				PROJECT_UNIQUE_VALUE = SA5RY454;
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_EMIT_LOC_STRINGS = YES;
 				TVOS_DEPLOYMENT_TARGET = 27.0;
 				WATCHOS_DEPLOYMENT_TARGET = 27.0;
 				XROS_DEPLOYMENT_TARGET = 27.0;

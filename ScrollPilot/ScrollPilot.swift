@@ -6,7 +6,7 @@ import Combine
 @MainActor
 final class ScrollPilotController: ObservableObject {
     @Published var naturalScrolling = true
-    @Published var status = "Einstellung wird gelesen …"
+    @Published var status = String(localized: LocalizedStringResource.readingSetting)
     
     private let naturalScrollIcon = "rectangle.and.hand.point.up.left.filled"
     private let unnaturalScrollIcon = "magicmouse.fill"
@@ -15,7 +15,7 @@ final class ScrollPilotController: ObservableObject {
     private let menu = NSMenu()
 
     private let statusMenuItem = NSMenuItem(
-        title: "Status wird gelesen …",
+        title: String(localized: LocalizedStringResource.readingSetting),
         action: nil,
         keyEquivalent: ""
     )
@@ -46,7 +46,7 @@ final class ScrollPilotController: ObservableObject {
         menu.addItem(NSMenuItem.separator())
 
         let refreshItem = NSMenuItem(
-            title: "Einstellung neu einlesen",
+            title: String(localized: LocalizedStringResource.reloadSetting),
             action: #selector(refreshMenuAction),
             keyEquivalent: ""
         )
@@ -56,7 +56,7 @@ final class ScrollPilotController: ObservableObject {
         menu.addItem(NSMenuItem.separator())
 
         let quitItem = NSMenuItem(
-            title: "ScrollPilot beenden",
+            title: String(localized: LocalizedStringResource.quitScrollPilot),
             action: #selector(quitApp),
             keyEquivalent: "q"
         )
@@ -92,7 +92,7 @@ final class ScrollPilotController: ObservableObject {
         )
 
         guard result.status == 0 else {
-            status = "Einstellung konnte nicht gelesen werden."
+            status = String(localized: LocalizedStringResource.couldNotReadSetting)
             updateMenuBar()
             return
         }
@@ -103,8 +103,8 @@ final class ScrollPilotController: ObservableObject {
 
         naturalScrolling = (value == "1" || value == "true")
         status = naturalScrolling
-            ? "Natürliches Scrollen ist eingeschaltet."
-            : "Natürliches Scrollen ist ausgeschaltet."
+            ? String(localized: LocalizedStringResource.naturalScrollingIsOn)
+            : String(localized: LocalizedStringResource.naturalScrollingIsOff)
 
         updateMenuBar()
     }
@@ -133,15 +133,15 @@ final class ScrollPilotController: ObservableObject {
         )
 
         guard activationResult.status == 0 else {
-            status = "Gespeichert, Aktualisierung fehlgeschlagen."
+            status = String(localized: LocalizedStringResource.savedButApplyingTheSettingFailed)
             refreshSetting()
             return
         }
 
         naturalScrolling = newValue
         status = newValue
-            ? "Natürliches Scrollen aktiviert."
-            : "Natürliches Scrollen deaktiviert."
+        ? String(localized: LocalizedStringResource.naturalScrollingIsOn)
+        : String(localized: LocalizedStringResource.naturalScrollingIsOff)
 
         updateMenuBar()
     }

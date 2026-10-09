@@ -1,0 +1,89 @@
+{
+  "sourceLanguage" : "en",
+  "strings" : {
+    "Could not read setting." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Einstellung konnte nicht gelesen werden."
+          }
+        }
+      }
+    },
+    "Natural scrolling is off." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Natürliches Scrollen ist ausgeschaltet."
+          }
+        }
+      }
+    },
+    "Natural scrolling is on." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Natürliches Scrollen ist eingeschaltet."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Natural scrolling is on."
+          }
+        }
+      }
+    },
+    "Quit ScrollPilot" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ScrollPilot beenden"
+          }
+        }
+      }
+    },
+    "Reading setting …" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Einstellung wird gelesen …"
+          }
+        }
+      }
+    },
+    "Reload setting" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Einstellung neu einlesen"
+          }
+        }
+      }
+    },
+    "Saved, but applying the setting failed." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gespeichert, Aktualisierung fehlgeschlagen."
+          }
+        }
+      }
+    }
+  },
+  "version" : "1.3"
+}
