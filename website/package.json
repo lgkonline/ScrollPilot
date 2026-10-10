@@ -1,0 +1,21 @@
+{
+  "name": "scrollpilot-website",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "check": "astro check"
+  },
+  "dependencies": {
+    "astro": "^7.3.8",
+    "bootstrap": "6.0.0-alpha.1"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.4",
+    "sass": "^1.93.0",
+    "typescript": "^5.9.0"
+  }
+}

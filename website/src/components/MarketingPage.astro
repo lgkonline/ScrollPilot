@@ -1,0 +1,517 @@
+---
+import "../styles/site.scss";
+import { translator, type Locale } from "../i18n";
+interface Props {
+  locale: Locale;
+}
+const { locale } = Astro.props;
+const t = translator(locale);
+const base = import.meta.env.BASE_URL.replace(/\/$/, "");
+const languageUrls = { en: `${base}/`, de: `${base}/de/` };
+const canonical = new URL(languageUrls[locale], Astro.site).href;
+const releases = "https://github.com/lgkonline/ScrollPilot/releases";
+const github = "https://github.com/lgkonline/ScrollPilot";
+const iconUrl = (size: number) =>
+  `${import.meta.env.BASE_URL.replace(/\/$/, "")}/icon/ScrollPilot-iOS-Default-${size}@1x.png`;
+const faqs = (
+  [
+    [
+      "Why do I need ScrollPilot?",
+      "macOS has separate natural-scrolling controls for your mouse and trackpad, but both change the same system-wide setting. ScrollPilot automatically switches that setting as you move between supported devices.",
+    ],
+    [
+      "Which devices are supported?",
+      "Automatic switching supports a trackpad and a Magic Mouse. You can also toggle natural scrolling manually from the ScrollPilot menu.",
+    ],
+    [
+      "Why does it need Input Monitoring?",
+      "ScrollPilot needs Input Monitoring permission to detect which supported device you’re using. Enable automatic switching in its menu, grant access in System Settings → Privacy & Security → Input Monitoring, then restart ScrollPilot.",
+    ],
+    [
+      "Can it start when I log in?",
+      "Yes. Enable launch at login from the ScrollPilot menu to have it ready when you start your Mac.",
+    ],
+    [
+      "Automatic switching isn’t working. What should I do?",
+      "First, check Input Monitoring permission and restart ScrollPilot. If an older or differently signed build is listed, quit ScrollPilot, remove the stale entry from Input Monitoring, open your current build, and request access again.",
+    ],
+  ] as const
+).map(([question, answer]) => [t(question), t(answer)]);
+---
+
+<!doctype html>
+<html lang={locale}>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content={t(
+        "macOS ties mouse and trackpad scrolling to one setting. ScrollPilot switches it automatically: natural on your trackpad, traditional on your Magic Mouse.",
+      )}
+    />
+    <meta name="theme-color" content="#f7f6f2" />
+    <meta
+      property="og:title"
+      content={t("ScrollPilot — The scrolling fix macOS should have.")}
+    />
+    <meta
+      property="og:description"
+      content={t(
+        "Independent scrolling preferences should be built into macOS. ScrollPilot fills the gap for your trackpad and Magic Mouse. Free and open source.",
+      )}
+    />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={canonical} />
+    <link rel="canonical" href={canonical} />
+    <link
+      rel="alternate"
+      hreflang="en"
+      href={new URL(languageUrls.en, Astro.site).href}
+    />
+    <link
+      rel="alternate"
+      hreflang="de"
+      href={new URL(languageUrls.de, Astro.site).href}
+    />
+    <link
+      rel="alternate"
+      hreflang="x-default"
+      href={new URL(languageUrls.en, Astro.site).href}
+    />
+    <meta property="og:locale" content={locale === "de" ? "de_DE" : "en_US"} />
+    <meta
+      property="og:locale:alternate"
+      content={locale === "de" ? "en_US" : "de_DE"}
+    />
+    <link rel="icon" type="image/png" sizes="16x16" href={iconUrl(16)} />
+    <link rel="icon" type="image/png" sizes="32x32" href={iconUrl(32)} />
+    <link rel="icon" type="image/png" sizes="64x64" href={iconUrl(64)} />
+    <link rel="apple-touch-icon" href={iconUrl(256)} />
+    <meta
+      property="og:image"
+      content={new URL(iconUrl(512), Astro.site).href}
+    />
+    <meta property="og:image:width" content="512" />
+    <meta property="og:image:height" content="512" />
+    <meta
+      property="og:image:alt"
+      content={t("ScrollPilot app icon: a white mouse on a blue background")}
+    />
+    <title>{t("ScrollPilot — The scrolling fix macOS should have.")}</title>
+  </head>
+  <body>
+    <a class="skip-link" href="#main">{t("Skip to content")}</a>
+    <header class="site-header container">
+      <a href="#" class="brand" aria-label={t("ScrollPilot home")}
+        ><img
+          class="brand-icon"
+          src={iconUrl(40)}
+          srcset={`${iconUrl(40)} 1x, ${iconUrl(128)} 3x`}
+          width="35"
+          height="35"
+          alt=""
+        /><span class="brand-text">ScrollPilot</span></a
+      >
+      <nav aria-label={t("Main navigation")}>
+        <a href="#why">{t("Why ScrollPilot")}</a><a href="#setup"
+          >{t("How it works")}</a
+        ><a href={github} class="github-nav"
+          >GitHub <span aria-hidden="true">↗</span></a
+        >
+      </nav>
+      <a href={releases} class="btn-solid nav-download"
+        >{t("Get ScrollPilot")} <span aria-hidden="true">↗</span></a
+      >
+      <div class="language-switch" role="group" aria-label={t("Language")}>
+        <a
+          href={languageUrls.en}
+          lang="en"
+          hreflang="en"
+          aria-current={locale === "en" ? "page" : undefined}
+          aria-label="English">EN</a
+        >
+        <a
+          href={languageUrls.de}
+          lang="de"
+          hreflang="de"
+          aria-current={locale === "de" ? "page" : undefined}
+          aria-label="Deutsch">DE</a
+        >
+      </div>
+    </header>
+    <main id="main">
+      <section class="hero container">
+        <div class="hero-copy">
+          <div class="eyebrow text-uppercase">
+            <span class="status-dot"></span>
+            {t("The scrolling fix macOS should have.")}
+          </div>
+          <h1>
+            {t("Your Mac.")}<br />{t("Your devices.")}<br /><span
+              >{t("Your directions.")}</span
+            >
+          </h1>
+          <p class="hero-description">
+            {t("Natural on your trackpad. Traditional on your Magic Mouse.")}<br
+              class="desktop-break"
+            />
+            {t("Apple should let you have both. ScrollPilot makes it happen.")}
+          </p>
+          <div class="hero-actions">
+            <a href={releases} class="btn-solid primary-button"
+              ><svg viewBox="0 0 24 24" aria-hidden="true"
+                ><path d="M12 3v12m-5-5 5 5 5-5M5 16v5h14v-5"></path></svg
+              >{t("Download for macOS")}</a
+            ><a href="#playground" class="text-link"
+              >{t("Take it for a scroll")} <span aria-hidden="true">↘</span></a
+            >
+          </div>
+          <div class="hero-note">
+            <span>{t("Free & open source")}</span><span class="note-dot">·</span
+            ><span>{t("Made for your menu bar")}</span>
+          </div>
+        </div>
+        <div
+          class="hero-art"
+          aria-label={t(
+            "Illustration of a trackpad and Magic Mouse with independent scrolling directions",
+          )}
+        >
+          <div class="orbit orbit-one"></div><div class="orbit orbit-two"></div>
+          <span class="art-spark spark-one">✳</span><span
+            class="art-spark spark-two">+</span
+          >
+          <div class="device-label trackpad-label">
+            <span class="mini-dot"></span>Trackpad <strong
+              >{t("Natural")}</strong
+            >
+            <span>↗</span>
+          </div>
+          <div class="trackpad">
+            <div class="device-arrows">↑<br />↓</div><span class="device-glint"
+            ></span>
+          </div>
+          <div class="mouse">
+            <span class="mouse-seam"></span><div class="mouse-arrow">↓</div>
+          </div>
+          <div class="device-label mouse-label">
+            <span class="mini-dot"></span>Magic Mouse <strong
+              >{t("Traditional")}</strong
+            ><span>↘</span>
+          </div>
+          <div class="switch-toast">
+            <img
+              class="toast-icon"
+              src={iconUrl(38)}
+              srcset={`${iconUrl(38)} 1x, ${iconUrl(76)} 2x`}
+              width="34"
+              height="34"
+              alt=""
+            /><div>
+              <strong>{t("Switch devices. Stay in flow.")}</strong><span
+                >{t("ScrollPilot takes it from here.")}</span
+              >
+            </div><span class="toast-check">✓</span>
+          </div>
+          <span class="art-caption"
+            >{t("YOUR MUSCLE MEMORY SAYS THANK YOU.")}</span
+          >
+        </div>
+      </section>
+      <div class="benefit-strip">
+        <div class="container">
+          <span><b>↕</b> {t("Automatic switching")}</span><span
+            ><b>⌘</b> {t("Native macOS app")}</span
+          ><span><b>◉</b> {t("Quietly in your menu bar")}</span><span
+            ><b>⌥</b> {t("Open source, always yours")}</span
+          >
+        </div>
+      </div>
+      <section id="why" class="section container">
+        <div class="section-heading reveal">
+          <span class="eyebrow">{t("TWO CONTROLS. ONE SHARED SETTING.")}</span
+          ><h2>
+            {t("This should be built in.")}<br /><span
+              >{t("Until then, there’s ScrollPilot.")}</span
+            >
+          </h2><p>
+            {
+              t(
+                "macOS shows separate scrolling controls for your mouse and trackpad.",
+              )
+            }<br />{
+              t(
+                "Change either one, and both devices change. ScrollPilot fixes the frustration",
+              )
+            }<br />{
+              t("by switching the setting automatically as you switch devices.")
+            }
+          </p>
+        </div>
+        <div class="row g-4 feature-grid">
+          <div class="col-md-4 reveal">
+            <article class="feature-card">
+              <span class="feature-icon">↗</span><h3>
+                {t("Natural stays natural.")}
+              </h3><p>
+                {
+                  t(
+                    "Swipe on your trackpad and content follows your fingers. Exactly the way you’re used to.",
+                  )
+                }
+              </p><div class="feature-bottom">
+                TRACKPAD <span>{t("Natural scrolling")} <b>{t("ON")}</b></span>
+              </div>
+            </article>
+          </div>
+          <div class="col-md-4 reveal">
+            <article class="feature-card brand-card">
+              <span class="feature-icon">↙</span><h3>
+                {t("Your mouse. Your way.")}
+              </h3><p>
+                {
+                  t(
+                    "Pick up your Magic Mouse and get traditional scrolling. No trip to System Settings required.",
+                  )
+                }
+              </p><div class="feature-bottom">
+                MAGIC MOUSE <span
+                  >{t("Natural scrolling")} <b>{t("OFF")}</b></span
+                >
+              </div>
+            </article>
+          </div>
+          <div class="col-md-4 reveal">
+            <article class="feature-card">
+              <span class="feature-icon">✳</span><h3>
+                {t("The missing little fix.")}
+              </h3><p>
+                {
+                  t(
+                    "ScrollPilot handles the shared macOS setting for you. Move between your trackpad and Magic Mouse without opening System Settings.",
+                  )
+                }
+              </p><div class="feature-bottom">
+                {t("MENU BAR")}
+                <span>{t("Always within reach")} <b>✓</b></span>
+              </div>
+            </article>
+          </div>
+        </div>
+      </section>
+      <section id="playground" class="playground-section">
+        <div class="container playground-grid">
+          <div class="playground-copy reveal">
+            <span class="eyebrow">{t("HOW IT SHOULD FEEL.")}</span><h2>
+              {t("Switch devices.")}<br /><span>{t("Keep your habits.")}</span>
+            </h2><p>
+              {t("Your scrolling direction should follow your device.")}<br />{
+                t("Try the switch to see ScrollPilot’s fix in action.")
+              }
+            </p><div
+              class="device-picker"
+              role="group"
+              aria-label={t("Choose a device for the demo")}
+            >
+              <button type="button" data-device="trackpad" aria-pressed="true"
+                >▱ <span>Trackpad</span></button
+              ><button type="button" data-device="mouse" aria-pressed="false"
+                >◠ <span>Magic Mouse</span></button
+              >
+            </div><p class="demo-caption">
+              {t("An interactive illustration of automatic switching.")}
+            </p>
+          </div>
+          <div class="demo-window reveal" data-mode="trackpad">
+            <div class="demo-toolbar">
+              <span class="window-dots"><i></i><i></i><i></i></span><span
+                >{t("A smoother everyday")}</span
+              ><img
+                class="toolbar-icon"
+                src={iconUrl(20)}
+                srcset={`${iconUrl(20)} 1x, ${iconUrl(40)} 2x`}
+                width="20"
+                height="20"
+                alt="ScrollPilot"
+              />
+            </div><div class="demo-content">
+              <div class="demo-scroll-content">
+                <span class="demo-tag">{t("IN YOUR ELEMENT")}</span><h3>
+                  {t("Go with")}<br />{t("your flow")}<span>.</span>
+                </h3><div class="demo-landscape">
+                  <div class="sun"></div><div class="hill hill-back"></div><div
+                    class="hill hill-front"
+                  >
+                  </div>
+                </div><div class="demo-lines"><i></i><i></i></div>
+              </div><span class="scroll-indicator">↕</span>
+            </div><div class="demo-status" aria-live="polite">
+              <span class="status-dot"></span><span
+                id="demo-status"
+                data-mouse={t("Magic Mouse connected")}
+                data-trackpad={t("Trackpad connected")}
+                >{t("Trackpad connected")}</span
+              ><strong
+                id="demo-direction"
+                data-mouse={t("Traditional scrolling")}
+                data-trackpad={t("Natural scrolling")}
+                >{t("Natural scrolling")}</strong
+              >
+            </div>
+          </div>
+        </div>
+      </section>
+      <section id="setup" class="section container">
+        <div class="section-heading reveal">
+          <span class="eyebrow">{t("SET IT UP. THEN FORGET ABOUT IT.")}</span
+          ><h2>{t("In your flow in three steps.")}</h2><p>
+            {t("A small setup for a much nicer every day.")}
+          </p>
+        </div>
+        <div class="row g-4 steps">
+          <div class="col-md-4 reveal">
+            <span class="step-number">01 <span>↓</span></span><h3>
+              {t("Meet your new pilot.")}
+            </h3><p>
+              {
+                t(
+                  "Download the app from GitHub Releases and open ScrollPilot on your Mac.",
+                )
+              }
+            </p><a class="text-link" href={releases}
+              >{t("Get ScrollPilot")} <span>↗</span></a
+            >
+          </div>
+          <div class="col-md-4 reveal">
+            <span class="step-number">02 <span>⌘</span></span><h3>
+              {t("Give it the go-ahead.")}
+            </h3><p>
+              {
+                t(
+                  "Enable automatic switching in the menu. Allow Input Monitoring in System Settings, then restart the app.",
+                )
+              }
+            </p>
+          </div>
+          <div class="col-md-4 reveal">
+            <span class="step-number">03 <span>✳</span></span><h3>
+              {t("Scroll your own way.")}
+            </h3><p>
+              {
+                t(
+                  "Switch between your trackpad and Magic Mouse. Enable launch at login to keep ScrollPilot ready for next time.",
+                )
+              }
+            </p>
+          </div>
+        </div>
+      </section>
+      <section class="faq-section container">
+        <div class="faq-heading reveal">
+          <span class="eyebrow">{t("GOOD TO KNOW")}</span><h2>
+            {t("A few little")}<br />{t("details.")}
+          </h2><p>{t("Small app. No big mysteries.")}</p>
+        </div><div class="faq-list reveal">
+          {
+            faqs.map(([question, answer]) => (
+              <details>
+                <>
+                  <summary>
+                    {question}
+                    <span aria-hidden="true">+</span>
+                  </summary>
+                  <p>{answer}</p>
+                </>
+              </details>
+            ))
+          }
+        </div>
+      </section>
+      <section class="closing container reveal">
+        <span class="closing-spark" aria-hidden="true">✳</span><span
+          class="eyebrow">{t("A SMALL APP FOR A macOS OVERSIGHT.")}</span
+        ><h2>{t("Your devices.")}<br />{t("No compromise.")}</h2><a
+          href={releases}
+          class="btn-solid primary-button"
+          >{t("Download ScrollPilot")} <span aria-hidden="true">↗</span></a
+        ><p>{t("Free. Open source. Right in your menu bar.")}</p>
+      </section>
+    </main>
+    <footer class="container">
+      <div>
+        <a href="https://lgk.io" class="brand"
+          ><svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill-rule="evenodd"
+            stroke-linejoin="round"
+            stroke-miterlimit="2"
+            clip-rule="evenodd"
+            viewBox="0 0 683 843"
+            class="brand-icon"
+            ><title>LGK logo</title><path
+              d="m441.69 282.948.023.024-.287-.478c20.801-13.652 34.525-37.155 34.525-63.837 0-42.08-34.118-76.27-76.222-76.366v-.024h140.394c12.48 22.714 19.51 48.727 19.51 76.39a160 160 0 0 1-6.36 44.758c73.616 14.37 129.229 79.282 129.229 157.082 0 22.116-4.495 43.18-12.648 62.284H566.543c19.533-13.772 32.277-36.557 32.277-62.284 0-42.151-34.214-76.39-76.39-76.39a76 76 0 0 0-36.365 9.23v.024h-.024c-.096.048-.168.095-.263.143l-.24-.382 144.316 230.962c-14.991 26.371-33.425 50.52-54.632 71.846l47.196 75.53a428 428 0 0 1-61.924 46.885c-64.938 40.406-141.566 63.742-223.622 63.742v-87.269c65.08 0 125.833-18.481 177.381-50.472L420.53 554.365l-.574.358c-24.172 14.752-52.648 23.264-83.084 23.264-88.344 0-160.048-71.728-160.048-160.072 0-56.712 29.552-106.563 74.118-134.967l44.352 70.987c-20.992 13.628-34.788 37.202-34.788 63.98 0 42.176 34.214 76.39 76.366 76.39 14.393 0 27.854-3.969 39.282-10.974l.503-.311c21.996-13.365 36.604-37.538 36.604-65.105 0-12.432-2.964-24.172-8.272-34.429L180.243 23.798A410.2 410.2 0 0 1 264.881-.016zM157.266 133.062l45.594 72.97C132.64 250.504 86.064 328.806 86.064 417.915c0 138.434 112.397 250.83 250.807 250.83v86.073C150.835 754.723-.008 603.808-.008 417.915c0-119.88 62.738-225.2 157.275-284.853z"
+            ></path></svg
+          ></a
+        >
+
+        <a href="#" class="brand"
+          ><img
+            class="brand-icon"
+            src={iconUrl(40)}
+            srcset={`${iconUrl(40)} 1x, ${iconUrl(128)} 3x`}
+            width="35"
+            height="35"
+            alt=""
+          /><span class="brand-text">ScrollPilot</span></a
+        >
+      </div>
+      <span>{t("The scrolling fix that should be built in.")}</span><div>
+        <a href={github}>{t("Source code ↗")}</a><a href={`${github}/issues`}
+          >{t("Feedback ↗")}</a
+        >
+      </div>
+    </footer>
+    <script>
+      const reduceMotion = window.matchMedia(
+        "(prefers-reduced-motion: reduce)",
+      );
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add("is-visible");
+              observer.unobserve(entry.target);
+            }
+          });
+        },
+        { threshold: 0.12 },
+      );
+      document.querySelectorAll(".reveal").forEach((element) => {
+        if (!reduceMotion.matches) element.classList.add("will-reveal");
+        observer.observe(element);
+      });
+      const buttons =
+        document.querySelectorAll<HTMLButtonElement>("[data-device]");
+      buttons.forEach((button) =>
+        button.addEventListener("click", () => {
+          const mouse = button.dataset.device === "mouse";
+          buttons.forEach((item) =>
+            item.setAttribute("aria-pressed", String(item === button)),
+          );
+          const demo = document.querySelector<HTMLElement>(".demo-window");
+          if (demo) demo.dataset.mode = mouse ? "mouse" : "trackpad";
+          const status = document.getElementById("demo-status");
+          const direction = document.getElementById("demo-direction");
+          if (status)
+            status.textContent =
+              (mouse ? status.dataset.mouse : status.dataset.trackpad) ?? "";
+          if (direction)
+            direction.textContent =
+              (mouse ? direction.dataset.mouse : direction.dataset.trackpad) ??
+              "";
+        }),
+      );
+    </script>
+  </body>
+</html>

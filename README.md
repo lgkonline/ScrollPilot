@@ -36,3 +36,9 @@ development, reset only ScrollPilot's Input Monitoring decision with:
 ```sh
 tccutil reset ListenEvent io.lgk.ScrollPilot
 ```
+
+## Marketing website
+
+The static Astro + Bootstrap 6 site lives in [website/](website/). See its
+[development and GitHub Pages instructions](website/README.md) to run it locally
+or enable deployment.
