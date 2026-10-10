@@ -21,3 +21,18 @@ That way, you can keep the gesture direction that feels right on each device.
 ## Download
 
 Download the `.app` from [Releases](https://github.com/lgkonline/ScrollPilot/releases).
+
+## Input Monitoring permission
+
+Automatic switching needs access to **System Settings → Privacy & Security →
+Input Monitoring**. Enable automatic switching from the ScrollPilot menu to
+request access, grant access in System Settings, and then restart ScrollPilot.
+
+If an older or differently signed build is already listed but automatic
+switching still does not work, quit ScrollPilot, remove the stale entry from
+Input Monitoring, start the current build, and request access again. During
+development, reset only ScrollPilot's Input Monitoring decision with:
+
+```sh
+tccutil reset ListenEvent io.lgk.ScrollPilot
+```

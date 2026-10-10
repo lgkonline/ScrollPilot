@@ -2,6 +2,12 @@ import Foundation
 import IOKit.hid
 
 final class InputDeviceMonitor {
+    enum AuthorizationStatus: Equatable {
+        case unknown
+        case denied
+        case granted
+    }
+
     enum DeviceKind: Equatable {
         case magicMouse
         case trackpad
@@ -10,6 +16,24 @@ final class InputDeviceMonitor {
     private var manager: IOHIDManager?
     private var onDeviceActivity: ((DeviceKind) -> Void)?
     private var lastDevice: DeviceKind?
+
+    var authorizationStatus: AuthorizationStatus {
+        switch IOHIDCheckAccess(kIOHIDRequestTypeListenEvent) {
+        case kIOHIDAccessTypeGranted:
+            return .granted
+
+        case kIOHIDAccessTypeDenied:
+            return .denied
+
+        default:
+            return .unknown
+        }
+    }
+
+    @discardableResult
+    func requestAccess() -> Bool {
+        IOHIDRequestAccess(kIOHIDRequestTypeListenEvent)
+    }
 
     func start(
         onDeviceActivity: @escaping (DeviceKind) -> Void

@@ -123,6 +123,7 @@ final class ScrollPilotController {
     private let settingsService = ScrollingSettingsService()
     private let automaticSwitchingKey = "automaticSwitchingEnabled"
     private var automaticSwitchingMenuItem: NSMenuItem!
+    private var inputMonitoringSettingsMenuItem: NSMenuItem!
     private var operationTask: Task<Void, Never>?
     private var pendingAutomaticValue: Bool?
     private var automaticSwitchingEnabled: Bool {
@@ -144,9 +145,10 @@ final class ScrollPilotController {
         refreshSetting()
 
         if automaticSwitchingEnabled {
-            enableAutomaticSwitching()
+            enableAutomaticSwitching(requestAccessIfNeeded: false)
         } else {
             updateAutomaticSwitchingMenuItem()
+            updateInputMonitoringMenuItem()
         }
     }
 
@@ -188,6 +190,14 @@ final class ScrollPilotController {
         )
         automaticSwitchingMenuItem.target = self
         menu.addItem(automaticSwitchingMenuItem)
+
+        inputMonitoringSettingsMenuItem = NSMenuItem(
+            title: String(localized: "Open Input Monitoring Settings…"),
+            action: #selector(openInputMonitoringSettings),
+            keyEquivalent: ""
+        )
+        inputMonitoringSettingsMenuItem.target = self
+        menu.addItem(inputMonitoringSettingsMenuItem)
 
         
         launchAtLoginMenuItem = NSMenuItem(
@@ -233,6 +243,7 @@ final class ScrollPilotController {
     @objc private func handleClick(_ sender: NSStatusBarButton) {
         if let event = NSApp.currentEvent,
            event.type == .rightMouseUp {
+            updateInputMonitoringMenuItem()
             statusItem.menu = menu
             statusItem.button?.performClick(nil)
             statusItem.menu = nil
@@ -250,7 +261,8 @@ final class ScrollPilotController {
         let shouldEnable = !automaticSwitchingEnabled
 
         if shouldEnable {
-            enableAutomaticSwitching()
+            automaticSwitchingEnabled = true
+            enableAutomaticSwitching(requestAccessIfNeeded: true)
         } else {
             automaticSwitchingEnabled = false
             inputMonitor.stop()
@@ -258,7 +270,27 @@ final class ScrollPilotController {
         }
     }
 
-    private func enableAutomaticSwitching() {
+    private func enableAutomaticSwitching(requestAccessIfNeeded: Bool) {
+        let authorizationStatus = inputMonitor.authorizationStatus
+
+        guard authorizationStatus == .granted else {
+            inputMonitor.stop()
+
+            if authorizationStatus == .unknown && requestAccessIfNeeded {
+                inputMonitor.requestAccess()
+                status = String(
+                    localized: "Grant Input Monitoring access, then restart ScrollPilot."
+                )
+            } else {
+                status = String(localized: "Input Monitoring permission is required.")
+            }
+
+            updateMenuBar()
+            updateAutomaticSwitchingMenuItem()
+            updateInputMonitoringMenuItem()
+            return
+        }
+
         let result = inputMonitor.start { [weak self] device in
             Task { @MainActor [weak self] in
                 guard let self,
@@ -277,22 +309,46 @@ final class ScrollPilotController {
         }
 
         guard result == kIOReturnSuccess else {
-            automaticSwitchingEnabled = false
             updateAutomaticSwitchingMenuItem()
 
-            status = String(localized: "Could not access input devices.")
+            status = String(localized: "Input device monitoring failed.")
             updateMenuBar()
+            updateInputMonitoringMenuItem()
 
             return
         }
 
         automaticSwitchingEnabled = true
         updateAutomaticSwitchingMenuItem()
+        updateInputMonitoringMenuItem()
     }
 
     private func updateAutomaticSwitchingMenuItem() {
         automaticSwitchingMenuItem?.state =
             automaticSwitchingEnabled ? .on : .off
+    }
+
+    private func updateInputMonitoringMenuItem() {
+        inputMonitoringSettingsMenuItem?.isHidden =
+            inputMonitor.authorizationStatus == .granted
+    }
+
+    @objc private func openInputMonitoringSettings() {
+        let workspace = NSWorkspace.shared
+        let inputMonitoringURL = URL(
+            string: "x-apple.systempreferences:com.apple.preference.security?Privacy_ListenEvent"
+        )
+        let privacyURL = URL(
+            string: "x-apple.systempreferences:com.apple.preference.security"
+        )
+
+        if let inputMonitoringURL, workspace.open(inputMonitoringURL) {
+            return
+        }
+
+        if let privacyURL {
+            workspace.open(privacyURL)
+        }
     }
 
     private func requestAutomaticSwitch(to enabled: Bool) {

@@ -2,6 +2,7 @@
   "sourceLanguage" : "en",
   "strings" : {
     "Could not access input devices." : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -52,6 +53,36 @@
         }
       }
     },
+    "Grant Input Monitoring access, then restart ScrollPilot." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "machine_translated",
+            "value" : "Gewähre Zugriff auf „Eingabekontrolle“ und starte ScrollPilot anschließend neu."
+          }
+        }
+      }
+    },
+    "Input device monitoring failed." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "machine_translated",
+            "value" : "Die Überwachung der Eingabegeräte ist fehlgeschlagen."
+          }
+        }
+      }
+    },
+    "Input Monitoring permission is required." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "machine_translated",
+            "value" : "Die Berechtigung für „Eingabekontrolle“ ist erforderlich."
+          }
+        }
+      }
+    },
     "Launch at login" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -87,6 +118,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Natural scrolling is on."
+          }
+        }
+      }
+    },
+    "Open Input Monitoring Settings…" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "machine_translated",
+            "value" : "Einstellungen für „Eingabekontrolle“ öffnen …"
           }
         }
       }
