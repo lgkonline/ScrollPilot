@@ -51,6 +51,17 @@
         }
       }
     },
+    "Open on GitHub" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Auf GitHub öffnen"
+          }
+        }
+      }
+    },
     "Quit ScrollPilot" : {
       "extractionState" : "manual",
       "localizations" : {

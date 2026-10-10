@@ -75,6 +75,14 @@ final class ScrollPilotController: ObservableObject {
         menu.addItem(refreshItem)
 
         menu.addItem(NSMenuItem.separator())
+        
+        let openOnGitHubItem = NSMenuItem(
+            title: String(localized: LocalizedStringResource.openOnGitHub),
+            action: #selector(openOnGitHub),
+            keyEquivalent: ""
+        )
+        openOnGitHubItem.target = self
+        menu.addItem(openOnGitHubItem)
 
         let quitItem = NSMenuItem(
             title: String(localized: LocalizedStringResource.quitScrollPilot),
@@ -133,6 +141,12 @@ final class ScrollPilotController: ObservableObject {
 
     @objc private func refreshMenuAction() {
         refreshSetting()
+    }
+    
+    @IBAction func openOnGitHub(_ sender: NSMenuItem) {
+        if let url = URL(string: "https://github.com/lgkonline/ScrollPilot") {
+            NSWorkspace.shared.open(url)
+        }
     }
 
     @objc private func quitApp() {
