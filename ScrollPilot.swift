@@ -23,10 +23,34 @@ final class ScrollPilotController: ObservableObject {
     )
     
     private var launchAtLoginMenuItem: NSMenuItem!
+    
+    
+    private let inputMonitor = InputDeviceMonitor()
+    private let automaticSwitchingKey = "automaticSwitchingEnabled"
+    private var automaticSwitchingMenuItem: NSMenuItem!
+    private var automaticSwitchingEnabled: Bool {
+        get {
+            UserDefaults.standard.bool(
+                forKey: automaticSwitchingKey
+            )
+        }
+        set {
+            UserDefaults.standard.set(
+                newValue,
+                forKey: automaticSwitchingKey
+            )
+        }
+    }
 
     init() {
         refreshSetting()
         setupMenuBar()
+
+        if automaticSwitchingEnabled {
+            enableAutomaticSwitching()
+        } else {
+            updateAutomaticSwitchingMenuItem()
+        }
     }
 
     private func setupMenuBar() {
@@ -56,6 +80,18 @@ final class ScrollPilotController: ObservableObject {
         toggleItem.target = self
         toggleItem.keyEquivalentModifierMask = [.control, .option]
         menu.addItem(toggleItem)
+        
+        
+        automaticSwitchingMenuItem = NSMenuItem(
+            title: String(
+                localized: LocalizedStringResource.switchAutomatically
+            ),
+            action: #selector(toggleAutomaticSwitching),
+            keyEquivalent: ""
+        )
+        automaticSwitchingMenuItem.target = self
+        menu.addItem(automaticSwitchingMenuItem)
+
         
         launchAtLoginMenuItem = NSMenuItem(
             title: String(localized: LocalizedStringResource.launchAtLogin),
@@ -93,6 +129,7 @@ final class ScrollPilotController: ObservableObject {
         menu.addItem(quitItem)
 
         updateMenuBar()
+        updateAutomaticSwitchingMenuItem()
     }
 
     @objc private func handleClick(_ sender: NSStatusBarButton) {
@@ -109,6 +146,69 @@ final class ScrollPilotController: ObservableObject {
     @objc private func toggleScrollingMenuAction() {
         toggleScrolling()
     }
+    
+    
+    @objc private func toggleAutomaticSwitching() {
+        let shouldEnable = !automaticSwitchingEnabled
+
+        if shouldEnable {
+            enableAutomaticSwitching()
+        } else {
+            automaticSwitchingEnabled = false
+            inputMonitor.stop()
+            updateAutomaticSwitchingMenuItem()
+        }
+    }
+
+    private func enableAutomaticSwitching() {
+        let result = inputMonitor.start { [weak self] device in
+            Task { @MainActor [weak self] in
+                guard let self,
+                      self.automaticSwitchingEnabled else {
+                    return
+                }
+
+                switch device {
+                case .magicMouse:
+                    self.setNaturalScrolling(false)
+
+                case .trackpad:
+                    self.setNaturalScrolling(true)
+                }
+            }
+        }
+
+        guard result == kIOReturnSuccess else {
+            automaticSwitchingEnabled = false
+            updateAutomaticSwitchingMenuItem()
+
+            status = "HID-Zugriff fehlgeschlagen: \(result)"
+            updateMenuBar()
+
+            return
+        }
+
+        automaticSwitchingEnabled = true
+        updateAutomaticSwitchingMenuItem()
+    }
+
+    private func updateAutomaticSwitchingMenuItem() {
+        automaticSwitchingMenuItem?.state =
+            automaticSwitchingEnabled ? .on : .off
+    }
+
+    private func setNaturalScrolling(_ enabled: Bool) {
+        // Aktuellen Systemzustand erneut einlesen, damit
+        // externe Änderungen berücksichtigt werden.
+        refreshSetting()
+
+        guard naturalScrolling != enabled else {
+            return
+        }
+
+        applyNaturalScrolling(enabled)
+    }
+
     
     private func updateLoginAtLaunchMenuItem() {
         launchAtLoginMenuItem?.state =
@@ -177,9 +277,13 @@ final class ScrollPilotController: ObservableObject {
         updateMenuBar()
     }
 
-    func toggleScrolling() {
-        let newValue = !naturalScrolling
 
+    func toggleScrolling() {
+        refreshSetting()
+        applyNaturalScrolling(!naturalScrolling)
+    }
+
+    private func applyNaturalScrolling(_ newValue: Bool) {
         let writeResult = run(
             "/usr/bin/defaults",
             [
@@ -201,18 +305,23 @@ final class ScrollPilotController: ObservableObject {
         )
 
         guard activationResult.status == 0 else {
-            status = String(localized: LocalizedStringResource.savedButApplyingTheSettingFailed)
-            refreshSetting()
+            status = String(
+                localized:
+                    LocalizedStringResource.savedButApplyingTheSettingFailed
+            )
+            updateMenuBar()
             return
         }
 
         naturalScrolling = newValue
+
         status = newValue
-        ? String(localized: LocalizedStringResource.naturalScrollingIsOn)
-        : String(localized: LocalizedStringResource.naturalScrollingIsOff)
+            ? String(localized: LocalizedStringResource.naturalScrollingIsOn)
+            : String(localized: LocalizedStringResource.naturalScrollingIsOff)
 
         updateMenuBar()
     }
+
 
     private func updateMenuBar() {
         if let button = statusItem?.button {

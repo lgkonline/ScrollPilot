@@ -10,6 +10,7 @@
 		F6DACF1230793C8A00941337 /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = F6DACF1130793C8A00941337 /* Localizable.xcstrings */; };
 		F6DACF1630794D5D00941337 /* ScrollPilot.icon in Resources */ = {isa = PBXBuildFile; fileRef = F6DACF1530794D5D00941337 /* ScrollPilot.icon */; };
 		F6DACF1830794F3500941337 /* ScrollPilot.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6DACF1730794F3500941337 /* ScrollPilot.swift */; };
+		F6DACF32307A4C5A00941337 /* InputDeviceMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6DACF31307A4C5A00941337 /* InputDeviceMonitor.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -17,6 +18,7 @@
 		F6DACF1130793C8A00941337 /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
 		F6DACF1530794D5D00941337 /* ScrollPilot.icon */ = {isa = PBXFileReference; lastKnownFileType = folder.iconcomposer.icon; path = ScrollPilot.icon; sourceTree = "<group>"; };
 		F6DACF1730794F3500941337 /* ScrollPilot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScrollPilot.swift; sourceTree = "<group>"; };
+		F6DACF31307A4C5A00941337 /* InputDeviceMonitor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputDeviceMonitor.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -34,6 +36,7 @@
 				F6DACF1130793C8A00941337 /* Localizable.xcstrings */,
 				F6DACF1530794D5D00941337 /* ScrollPilot.icon */,
 				F6DACF1730794F3500941337 /* ScrollPilot.swift */,
+				F6DACF31307A4C5A00941337 /* InputDeviceMonitor.swift */,
 				000000000000000000000020 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -114,6 +117,7 @@
 			isa = PBXSourcesBuildPhase;
 			files = (
 				F6DACF1830794F3500941337 /* ScrollPilot.swift in Sources */,
+				F6DACF32307A4C5A00941337 /* InputDeviceMonitor.swift in Sources */,
 			);
 		};
 /* End PBXSourcesBuildPhase section */
