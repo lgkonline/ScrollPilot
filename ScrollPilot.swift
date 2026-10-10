@@ -162,10 +162,6 @@ final class ScrollPilotController {
                 systemSymbolName: naturalScrollIcon,
                 accessibilityDescription: "ScrollPilot"
             )
-            button.target = self
-            button.action = #selector(handleClick(_:))
-
-            button.sendAction(on: [.leftMouseUp, .rightMouseUp])
         }
 
         menu.addItem(statusMenuItem)
@@ -238,18 +234,7 @@ final class ScrollPilotController {
         updateMenuBar()
         updateAutomaticSwitchingMenuItem()
         updateLoginAtLaunchMenuItem()
-    }
-
-    @objc private func handleClick(_ sender: NSStatusBarButton) {
-        if let event = NSApp.currentEvent,
-           event.type == .rightMouseUp {
-            updateInputMonitoringMenuItem()
-            statusItem.menu = menu
-            statusItem.button?.performClick(nil)
-            statusItem.menu = nil
-        } else {
-            toggleScrolling()
-        }
+        statusItem.menu = menu
     }
     
     @objc private func toggleScrollingMenuAction() {
