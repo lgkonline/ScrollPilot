@@ -1,10 +1,23 @@
 # ScrollPilot
 
-ScrollPilot is a small macOS app that lets you quickly toggle natural scrolling from the menu bar.
+Use natural scrolling on your trackpad and traditional scrolling on your mouse.
 
-It adds a lightweight status item to the top-right of the screen, so you can switch between natural and non-natural scrolling in one click without opening System Settings.
+macOS shows separate natural-scrolling controls for the mouse and trackpad in
+System Settings, but both controls change the same system-wide setting. That
+means you can't keep natural scrolling enabled for your trackpad while turning
+it off for your mouse using macOS settings alone.
 
-Initial goal for this project was to automatically switch to natural scrolling for trackpads and disable it for mice (especially Magic Mouse). This is now possible by detecting whether a trackpad or Magic Mouse is in use and switching automatically.
-A manual toggle is still available as a fallback, but the automatic behavior is supported.
+ScrollPilot works around this limitation. It sits in the menu bar and can
+automatically switch the scrolling direction when you use a supported device:
+natural scrolling for a trackpad, and traditional scrolling for a Magic Mouse.
+That way, you can keep the gesture direction that feels right on each device.
 
-Under Releases you'll find a `.app` file to download.
+## Features
+
+- Automatically switch scrolling direction when using a trackpad or Magic Mouse.
+- Toggle natural scrolling manually from the menu bar.
+- Optionally launch ScrollPilot when you log in.
+
+## Download
+
+Download the `.app` from [Releases](https://github.com/lgkonline/ScrollPilot/releases).
