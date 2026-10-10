@@ -1,6 +1,24 @@
 ---
 import "../styles/site.scss";
 import { translator, type Locale } from "../i18n";
+import {
+  Apple,
+  ArrowDown,
+  ArrowDownLeft,
+  ArrowDownRight,
+  ArrowsVertical,
+  ArrowUp,
+  ArrowUpRight,
+  Asterisk,
+  Braces,
+  Check,
+  Download,
+  MenuAppFill,
+  Mouse,
+  Plus,
+  Square,
+  Toggle2On,
+} from "react-bootstrap-icons";
 interface Props {
   locale: Locale;
 }
@@ -117,11 +135,11 @@ const faqs = (
         <a href="#why">{t("Why ScrollPilot")}</a><a href="#setup"
           >{t("How it works")}</a
         ><a href={github} class="github-nav"
-          >GitHub <span aria-hidden="true">↗</span></a
+          >GitHub <ArrowUpRight aria-hidden /></a
         >
       </nav>
       <a href={releases} class="btn-solid nav-download"
-        >{t("Get ScrollPilot")} <span aria-hidden="true">↗</span></a
+        >{t("Get ScrollPilot")} <ArrowUpRight aria-hidden /></a
       >
       <div class="language-switch" role="group" aria-label={t("Language")}>
         <a
@@ -160,11 +178,9 @@ const faqs = (
           </p>
           <div class="hero-actions">
             <a href={releases} class="btn-solid primary-button"
-              ><svg viewBox="0 0 24 24" aria-hidden="true"
-                ><path d="M12 3v12m-5-5 5 5 5-5M5 16v5h14v-5"></path></svg
-              >{t("Download for macOS")}</a
+              ><Download aria-hidden />{t("Download for macOS")}</a
             ><a href="#playground" class="text-link"
-              >{t("Take it for a scroll")} <span aria-hidden="true">↘</span></a
+              >{t("Take it for a scroll")} <ArrowDownRight aria-hidden /></a
             >
           </div>
           <div class="hero-note">
@@ -179,26 +195,29 @@ const faqs = (
           )}
         >
           <div class="orbit orbit-one"></div><div class="orbit orbit-two"></div>
-          <span class="art-spark spark-one">✳</span><span
-            class="art-spark spark-two">+</span
+          <span class="art-spark spark-one"><Asterisk aria-hidden /></span><span
+            class="art-spark spark-two"><Plus aria-hidden /></span
           >
           <div class="device-label trackpad-label">
             <span class="mini-dot"></span>Trackpad <strong
               >{t("Natural")}</strong
             >
-            <span>↗</span>
+            <ArrowUpRight aria-hidden />
           </div>
           <div class="trackpad">
-            <div class="device-arrows">↑<br />↓</div><span class="device-glint"
-            ></span>
+            <div class="device-arrows">
+              <ArrowUp aria-hidden /><br /><ArrowDown aria-hidden />
+            </div><span class="device-glint"></span>
           </div>
           <div class="mouse">
-            <span class="mouse-seam"></span><div class="mouse-arrow">↓</div>
+            <span class="mouse-seam"></span><div class="mouse-arrow">
+              <ArrowDown aria-hidden />
+            </div>
           </div>
           <div class="device-label mouse-label">
             <span class="mini-dot"></span>Magic Mouse <strong
               >{t("Traditional")}</strong
-            ><span>↘</span>
+            ><ArrowDownRight aria-hidden />
           </div>
           <div class="switch-toast">
             <img
@@ -212,7 +231,7 @@ const faqs = (
               <strong>{t("Switch devices. Stay in flow.")}</strong><span
                 >{t("ScrollPilot takes it from here.")}</span
               >
-            </div><span class="toast-check">✓</span>
+            </div><span class="toast-check"><Check aria-hidden /></span>
           </div>
           <span class="art-caption"
             >{t("YOUR MUSCLE MEMORY SAYS THANK YOU.")}</span
@@ -221,11 +240,11 @@ const faqs = (
       </section>
       <div class="benefit-strip">
         <div class="container">
-          <span><b>↕</b> {t("Automatic switching")}</span><span
-            ><b>⌘</b> {t("Native macOS app")}</span
-          ><span><b>◉</b> {t("Quietly in your menu bar")}</span><span
-            ><b>⌥</b> {t("Open source, always yours")}</span
-          >
+          <span><Toggle2On aria-hidden /> {t("Automatic switching")}</span><span
+            ><Apple aria-hidden /> {t("Native macOS app")}</span
+          ><span
+            ><MenuAppFill aria-hidden /> {t("Quietly in your menu bar")}</span
+          ><span><Braces aria-hidden /> {t("Open source, always yours")}</span>
         </div>
       </div>
       <section id="why" class="section container">
@@ -252,7 +271,7 @@ const faqs = (
         <div class="row g-4 feature-grid">
           <div class="col-md-4 reveal">
             <article class="feature-card">
-              <span class="feature-icon">↗</span><h3>
+              <span class="feature-icon"><ArrowUpRight aria-hidden /></span><h3>
                 {t("Natural stays natural.")}
               </h3><p>
                 {
@@ -267,7 +286,8 @@ const faqs = (
           </div>
           <div class="col-md-4 reveal">
             <article class="feature-card brand-card">
-              <span class="feature-icon">↙</span><h3>
+              <span class="feature-icon"><ArrowDownLeft aria-hidden /></span><h3
+              >
                 {t("Your mouse. Your way.")}
               </h3><p>
                 {
@@ -284,7 +304,7 @@ const faqs = (
           </div>
           <div class="col-md-4 reveal">
             <article class="feature-card">
-              <span class="feature-icon">✳</span><h3>
+              <span class="feature-icon"><Asterisk aria-hidden /></span><h3>
                 {t("The missing little fix.")}
               </h3><p>
                 {
@@ -294,7 +314,9 @@ const faqs = (
                 }
               </p><div class="feature-bottom">
                 {t("MENU BAR")}
-                <span>{t("Always within reach")} <b>✓</b></span>
+                <span
+                  >{t("Always within reach")} <b><Check aria-hidden /></b></span
+                >
               </div>
             </article>
           </div>
@@ -315,9 +337,9 @@ const faqs = (
               aria-label={t("Choose a device for the demo")}
             >
               <button type="button" data-device="trackpad" aria-pressed="true"
-                >▱ <span>Trackpad</span></button
+                ><Square aria-hidden /> <span>Trackpad</span></button
               ><button type="button" data-device="mouse" aria-pressed="false"
-                >◠ <span>Magic Mouse</span></button
+                ><Mouse aria-hidden /> <span>Magic Mouse</span></button
               >
             </div><p class="demo-caption">
               {t("An interactive illustration of automatic switching.")}
@@ -345,7 +367,9 @@ const faqs = (
                   >
                   </div>
                 </div><div class="demo-lines"><i></i><i></i></div>
-              </div><span class="scroll-indicator">↕</span>
+              </div><span class="scroll-indicator"
+                ><ArrowsVertical aria-hidden /></span
+              >
             </div><div class="demo-status" aria-live="polite">
               <span class="status-dot"></span><span
                 id="demo-status"
@@ -371,7 +395,9 @@ const faqs = (
         </div>
         <div class="row g-4 steps">
           <div class="col-md-4 reveal">
-            <span class="step-number">01 <span>↓</span></span><h3>
+            <span class="step-number"
+              >01 <span><ArrowDown aria-hidden /></span></span
+            ><h3>
               {t("Meet your new pilot.")}
             </h3><p>
               {
@@ -380,11 +406,13 @@ const faqs = (
                 )
               }
             </p><a class="text-link" href={releases}
-              >{t("Get ScrollPilot")} <span>↗</span></a
+              >{t("Get ScrollPilot")} <ArrowUpRight aria-hidden /></a
             >
           </div>
           <div class="col-md-4 reveal">
-            <span class="step-number">02 <span>⌘</span></span><h3>
+            <span class="step-number"
+              >02 <span><Apple aria-hidden /></span></span
+            ><h3>
               {t("Give it the go-ahead.")}
             </h3><p>
               {
@@ -395,7 +423,9 @@ const faqs = (
             </p>
           </div>
           <div class="col-md-4 reveal">
-            <span class="step-number">03 <span>✳</span></span><h3>
+            <span class="step-number"
+              >03 <span><Asterisk aria-hidden /></span></span
+            ><h3>
               {t("Scroll your own way.")}
             </h3><p>
               {
@@ -419,7 +449,9 @@ const faqs = (
                 <>
                   <summary>
                     {question}
-                    <span aria-hidden="true">+</span>
+                    <span>
+                      <Plus aria-hidden />
+                    </span>
                   </summary>
                   <p>{answer}</p>
                 </>
@@ -429,12 +461,13 @@ const faqs = (
         </div>
       </section>
       <section class="closing container reveal">
-        <span class="closing-spark" aria-hidden="true">✳</span><span
-          class="eyebrow">{t("A SMALL APP FOR A macOS OVERSIGHT.")}</span
+        <span class="closing-spark" aria-hidden="true"
+          ><Asterisk aria-hidden /></span
+        ><span class="eyebrow">{t("A SMALL APP FOR A macOS OVERSIGHT.")}</span
         ><h2>{t("Your devices.")}<br />{t("No compromise.")}</h2><a
           href={releases}
           class="btn-solid primary-button"
-          >{t("Download ScrollPilot")} <span aria-hidden="true">↗</span></a
+          >{t("Download ScrollPilot")} <ArrowUpRight aria-hidden /></a
         ><p>{t("Free. Open source. Right in your menu bar.")}</p>
       </section>
     </main>
@@ -467,8 +500,9 @@ const faqs = (
         >
       </div>
       <span>{t("The scrolling fix that should be built in.")}</span><div>
-        <a href={github}>{t("Source code ↗")}</a><a href={`${github}/issues`}
-          >{t("Feedback ↗")}</a
+        <a href={github}>{t("Source code")} <ArrowUpRight aria-hidden /></a><a
+          href={`${github}/issues`}
+          >{t("Feedback")} <ArrowUpRight aria-hidden /></a
         >
       </div>
     </footer>
