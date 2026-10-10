@@ -1,6 +1,16 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
+    "Could not access input devices." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "machine_translated",
+            "value" : "Eingabegeräte konnten nicht überwacht werden."
+          }
+        }
+      }
+    },
     "Could not read setting." : {
       "extractionState" : "manual",
       "localizations" : {
@@ -8,6 +18,36 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Einstellung konnte nicht gelesen werden."
+          }
+        }
+      }
+    },
+    "Could not save setting." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "machine_translated",
+            "value" : "Einstellung konnte nicht gespeichert werden."
+          }
+        }
+      }
+    },
+    "Could not update launch at login." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "machine_translated",
+            "value" : "Start bei der Anmeldung konnte nicht aktualisiert werden."
+          }
+        }
+      }
+    },
+    "Global shortcut could not be registered." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "machine_translated",
+            "value" : "Der Tastaturkurzbefehl konnte nicht registriert werden."
           }
         }
       }
@@ -113,6 +153,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Automatisch umschalten"
+          }
+        }
+      }
+    },
+    "The system tool required to apply the setting is unavailable." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "machine_translated",
+            "value" : "Das zum Anwenden der Einstellung erforderliche Systemwerkzeug ist nicht verfügbar."
           }
         }
       }

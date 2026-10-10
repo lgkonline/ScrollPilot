@@ -1,14 +1,108 @@
 
 import SwiftUI
 import AppKit
-import Combine
 import ServiceManagement
 import Carbon.HIToolbox
 
+private struct ProcessResult: Sendable {
+    let status: Int32
+    let output: String
+}
+
+private enum ScrollingSettingsError: Error {
+    case readFailed
+    case writeFailed
+    case activationToolUnavailable
+    case activationFailed
+}
+
+private struct ScrollingSettingsService: Sendable {
+    private static let defaultsPath = "/usr/bin/defaults"
+    private static let activationPath =
+        "/System/Library/PrivateFrameworks/SystemAdministration.framework/Resources/activateSettings"
+    private static let preferenceKey = "com.apple.swipescrolldirection"
+
+    func read() async -> Result<Bool, ScrollingSettingsError> {
+        let result = await run(
+            Self.defaultsPath,
+            ["read", "-g", Self.preferenceKey]
+        )
+
+        guard result.status == 0 else {
+            return .failure(.readFailed)
+        }
+
+        let value = result.output.trimmingCharacters(
+            in: .whitespacesAndNewlines
+        )
+        return .success(value == "1" || value == "true")
+    }
+
+    func setNaturalScrolling(
+        _ enabled: Bool
+    ) async -> Result<Void, ScrollingSettingsError> {
+        let writeResult = await run(
+            Self.defaultsPath,
+            [
+                "write", "-g", Self.preferenceKey,
+                "-bool", enabled ? "true" : "false"
+            ]
+        )
+
+        guard writeResult.status == 0 else {
+            return .failure(.writeFailed)
+        }
+
+        guard FileManager.default.isExecutableFile(
+            atPath: Self.activationPath
+        ) else {
+            return .failure(.activationToolUnavailable)
+        }
+
+        let activationResult = await run(Self.activationPath, ["-u"])
+        guard activationResult.status == 0 else {
+            return .failure(.activationFailed)
+        }
+
+        return .success(())
+    }
+
+    private func run(
+        _ path: String,
+        _ arguments: [String]
+    ) async -> ProcessResult {
+        await Task.detached(priority: .userInitiated) {
+            let process = Process()
+            let pipe = Pipe()
+
+            process.executableURL = URL(fileURLWithPath: path)
+            process.arguments = arguments
+            process.standardOutput = pipe
+            process.standardError = pipe
+
+            do {
+                try process.run()
+                let data = pipe.fileHandleForReading.readDataToEndOfFile()
+                process.waitUntilExit()
+
+                return ProcessResult(
+                    status: process.terminationStatus,
+                    output: String(decoding: data, as: UTF8.self)
+                )
+            } catch {
+                return ProcessResult(
+                    status: -1,
+                    output: error.localizedDescription
+                )
+            }
+        }.value
+    }
+}
+
 @MainActor
-final class ScrollPilotController: ObservableObject {
-    @Published var naturalScrolling = true
-    @Published var status = String(localized: LocalizedStringResource.readingSetting)
+final class ScrollPilotController {
+    private(set) var naturalScrolling = true
+    private(set) var status = String(localized: LocalizedStringResource.readingSetting)
     
     private let naturalScrollIcon = "rectangle.and.hand.point.up.left.filled"
     private let unnaturalScrollIcon = "magicmouse.fill"
@@ -26,8 +120,11 @@ final class ScrollPilotController: ObservableObject {
     
     
     private let inputMonitor = InputDeviceMonitor()
+    private let settingsService = ScrollingSettingsService()
     private let automaticSwitchingKey = "automaticSwitchingEnabled"
     private var automaticSwitchingMenuItem: NSMenuItem!
+    private var operationTask: Task<Void, Never>?
+    private var pendingAutomaticValue: Bool?
     private var automaticSwitchingEnabled: Bool {
         get {
             UserDefaults.standard.bool(
@@ -43,8 +140,8 @@ final class ScrollPilotController: ObservableObject {
     }
 
     init() {
-        refreshSetting()
         setupMenuBar()
+        refreshSetting()
 
         if automaticSwitchingEnabled {
             enableAutomaticSwitching()
@@ -130,6 +227,7 @@ final class ScrollPilotController: ObservableObject {
 
         updateMenuBar()
         updateAutomaticSwitchingMenuItem()
+        updateLoginAtLaunchMenuItem()
     }
 
     @objc private func handleClick(_ sender: NSStatusBarButton) {
@@ -170,10 +268,10 @@ final class ScrollPilotController: ObservableObject {
 
                 switch device {
                 case .magicMouse:
-                    self.setNaturalScrolling(false)
+                    self.requestAutomaticSwitch(to: false)
 
                 case .trackpad:
-                    self.setNaturalScrolling(true)
+                    self.requestAutomaticSwitch(to: true)
                 }
             }
         }
@@ -182,7 +280,7 @@ final class ScrollPilotController: ObservableObject {
             automaticSwitchingEnabled = false
             updateAutomaticSwitchingMenuItem()
 
-            status = "HID-Zugriff fehlgeschlagen: \(result)"
+            status = String(localized: "Could not access input devices.")
             updateMenuBar()
 
             return
@@ -197,16 +295,15 @@ final class ScrollPilotController: ObservableObject {
             automaticSwitchingEnabled ? .on : .off
     }
 
-    private func setNaturalScrolling(_ enabled: Bool) {
-        // Aktuellen Systemzustand erneut einlesen, damit
-        // externe Änderungen berücksichtigt werden.
-        refreshSetting()
-
-        guard naturalScrolling != enabled else {
+    private func requestAutomaticSwitch(to enabled: Bool) {
+        guard operationTask == nil else {
+            pendingAutomaticValue = enabled
             return
         }
 
-        applyNaturalScrolling(enabled)
+        startOperation {
+            await self.setNaturalScrolling(enabled)
+        }
     }
 
     
@@ -225,6 +322,7 @@ final class ScrollPilotController: ObservableObject {
 
             case .requiresApproval:
                 SMAppService.openSystemSettingsLoginItems()
+                updateLoginAtLaunchMenuItem()
                 return
 
             default:
@@ -233,7 +331,7 @@ final class ScrollPilotController: ObservableObject {
 
             updateLoginAtLaunchMenuItem()
         } catch {
-            status = "Automatischer Start fehlgeschlagen: \(error.localizedDescription)"
+            status = String(localized: "Could not update launch at login.")
             updateMenuBar()
             updateLoginAtLaunchMenuItem()
         }
@@ -254,71 +352,104 @@ final class ScrollPilotController: ObservableObject {
     }
 
     func refreshSetting() {
-        let result = run(
-            "/usr/bin/defaults",
-            ["read", "-g", "com.apple.swipescrolldirection"]
-        )
-
-        guard result.status == 0 else {
-            status = String(localized: LocalizedStringResource.couldNotReadSetting)
-            updateMenuBar()
-            return
+        startOperation {
+            _ = await self.readSetting()
         }
-
-        let value = result.output.trimmingCharacters(
-            in: .whitespacesAndNewlines
-        )
-
-        naturalScrolling = (value == "1" || value == "true")
-        status = naturalScrolling
-            ? String(localized: LocalizedStringResource.naturalScrollingIsOn)
-            : String(localized: LocalizedStringResource.naturalScrollingIsOff)
-
-        updateMenuBar()
     }
 
 
     func toggleScrolling() {
-        refreshSetting()
-        applyNaturalScrolling(!naturalScrolling)
+        startOperation {
+            guard let currentValue = await self.readSetting() else {
+                return
+            }
+
+            await self.applyNaturalScrolling(!currentValue)
+        }
     }
 
-    private func applyNaturalScrolling(_ newValue: Bool) {
-        let writeResult = run(
-            "/usr/bin/defaults",
-            [
-                "write", "-g",
-                "com.apple.swipescrolldirection",
-                "-bool", newValue ? "true" : "false"
-            ]
-        )
+    private func startOperation(
+        _ operation: @escaping @MainActor () async -> Void
+    ) {
+        guard operationTask == nil else { return }
 
-        guard writeResult.status == 0 else {
-            status = "Schreibfehler: \(writeResult.output)"
+        operationTask = Task { [weak self] in
+            guard let self else { return }
+            await operation()
+
+            while let pendingValue = self.pendingAutomaticValue {
+                self.pendingAutomaticValue = nil
+                await self.setNaturalScrolling(pendingValue)
+            }
+
+            self.operationTask = nil
+        }
+    }
+
+    private func readSetting() async -> Bool? {
+        switch await settingsService.read() {
+        case .success(let value):
+            updateDisplayedSetting(value)
+            return value
+
+        case .failure:
+            status = String(
+                localized: LocalizedStringResource.couldNotReadSetting
+            )
             updateMenuBar()
+            return nil
+        }
+    }
+
+    private func setNaturalScrolling(_ enabled: Bool) async {
+        guard let currentValue = await readSetting(),
+              currentValue != enabled else {
             return
         }
 
-        let activationResult = run(
-            "/System/Library/PrivateFrameworks/SystemAdministration.framework/Resources/activateSettings",
-            ["-u"]
-        )
+        await applyNaturalScrolling(enabled)
+    }
 
-        guard activationResult.status == 0 else {
+    private func applyNaturalScrolling(_ newValue: Bool) async {
+        switch await settingsService.setNaturalScrolling(newValue) {
+        case .success:
+            updateDisplayedSetting(newValue)
+
+        case .failure(.writeFailed):
+            status = String(localized: "Could not save setting.")
+            updateMenuBar()
+
+        case .failure(.activationToolUnavailable):
+            status = String(
+                localized: "The system tool required to apply the setting is unavailable."
+            )
+            await refreshStoredValuePreservingStatus()
+            updateMenuBar()
+
+        case .failure(.activationFailed):
             status = String(
                 localized:
                     LocalizedStringResource.savedButApplyingTheSettingFailed
             )
+            await refreshStoredValuePreservingStatus()
             updateMenuBar()
-            return
+
+        case .failure(.readFailed):
+            break
         }
+    }
 
-        naturalScrolling = newValue
+    private func refreshStoredValuePreservingStatus() async {
+        if case .success(let value) = await settingsService.read() {
+            naturalScrolling = value
+        }
+    }
 
-        status = newValue
+    private func updateDisplayedSetting(_ value: Bool) {
+        naturalScrolling = value
+        status = value
             ? String(localized: LocalizedStringResource.naturalScrollingIsOn)
             : String(localized: LocalizedStringResource.naturalScrollingIsOff)
-
         updateMenuBar()
     }
 
@@ -329,37 +460,19 @@ final class ScrollPilotController: ObservableObject {
                 systemSymbolName: naturalScrolling
                     ? naturalScrollIcon
                     : unnaturalScrollIcon,
-                accessibilityDescription: status
+                accessibilityDescription: "ScrollPilot"
             )
+            button.setAccessibilityValue(status)
         }
 
         statusMenuItem.title = status
     }
 
-    private func run(
-        _ path: String,
-        _ arguments: [String]
-    ) -> (status: Int32, output: String) {
-        let process = Process()
-        let pipe = Pipe()
-
-        process.executableURL = URL(fileURLWithPath: path)
-        process.arguments = arguments
-        process.standardOutput = pipe
-        process.standardError = pipe
-
-        do {
-            try process.run()
-            let data = pipe.fileHandleForReading.readDataToEndOfFile()
-            process.waitUntilExit()
-
-            return (
-                process.terminationStatus,
-                String(decoding: data, as: UTF8.self)
-            )
-        } catch {
-            return (-1, error.localizedDescription)
-        }
+    func reportHotKeyRegistrationFailure() {
+        status = String(
+            localized: "Global shortcut could not be registered."
+        )
+        updateMenuBar()
     }
 }
 
@@ -382,19 +495,28 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     func applicationDidFinishLaunching(_ notification: Notification) {
         NSApp.setActivationPolicy(.accessory)
         controller = ScrollPilotController()
-        globalHotKey = GlobalHotKey { [weak self] in
-            self?.controller?.toggleScrolling()
+        do {
+            globalHotKey = try GlobalHotKey { [weak self] in
+                self?.controller?.toggleScrolling()
+            }
+        } catch {
+            controller?.reportHotKeyRegistrationFailure()
         }
     }
 }
 
 
 final class GlobalHotKey {
+    enum RegistrationError: Error {
+        case eventHandler(OSStatus)
+        case hotKey(OSStatus)
+    }
+
     private var hotKeyRef: EventHotKeyRef?
     private var eventHandler: EventHandlerRef?
     private let onPress: () -> Void
 
-    init(onPress: @escaping () -> Void) {
+    init(onPress: @escaping () -> Void) throws {
         self.onPress = onPress
 
         var eventType = EventTypeSpec(
@@ -442,8 +564,7 @@ final class GlobalHotKey {
         )
 
         guard handlerStatus == noErr else {
-            print("ScrollPilot: Event-Handler konnte nicht installiert werden.")
-            return
+            throw RegistrationError.eventHandler(handlerStatus)
         }
 
         let hotKeyID = EventHotKeyID(
@@ -463,7 +584,11 @@ final class GlobalHotKey {
         )
 
         if hotKeyStatus != noErr {
-            print("ScrollPilot: Shortcut konnte nicht registriert werden. Code: \(hotKeyStatus)")
+            if let eventHandler {
+                RemoveEventHandler(eventHandler)
+                self.eventHandler = nil
+            }
+            throw RegistrationError.hotKey(hotKeyStatus)
         }
     }
 
