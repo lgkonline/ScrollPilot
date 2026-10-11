@@ -124,6 +124,7 @@ final class ScrollPilotController {
     private let automaticSwitchingKey = "automaticSwitchingEnabled"
     private var automaticSwitchingMenuItem: NSMenuItem!
     private var inputMonitoringSettingsMenuItem: NSMenuItem!
+    private var aboutWindow: NSWindow?
     private var operationTask: Task<Void, Never>?
     private var pendingAutomaticValue: Bool?
     private var automaticSwitchingEnabled: Bool {
@@ -215,13 +216,13 @@ final class ScrollPilotController {
 
         menu.addItem(NSMenuItem.separator())
         
-        let openOnGitHubItem = NSMenuItem(
-            title: String(localized: LocalizedStringResource.openOnGitHub),
-            action: #selector(openOnGitHub),
+        let aboutItem = NSMenuItem(
+            title: String(localized: "About ScrollPilot"),
+            action: #selector(showAboutWindow),
             keyEquivalent: ""
         )
-        openOnGitHubItem.target = self
-        menu.addItem(openOnGitHubItem)
+        aboutItem.target = self
+        menu.addItem(aboutItem)
 
         let quitItem = NSMenuItem(
             title: String(localized: LocalizedStringResource.quitScrollPilot),
@@ -382,10 +383,25 @@ final class ScrollPilotController {
         refreshSetting()
     }
     
-    @IBAction func openOnGitHub(_ sender: NSMenuItem) {
-        if let url = URL(string: "https://github.com/lgkonline/ScrollPilot") {
-            NSWorkspace.shared.open(url)
+    @objc private func showAboutWindow() {
+        let window: NSWindow
+
+        if let aboutWindow {
+            window = aboutWindow
+        } else {
+            let hostingController = NSHostingController(rootView: AboutView())
+            let newWindow = NSWindow(contentViewController: hostingController)
+            newWindow.title = String(localized: "About ScrollPilot")
+            newWindow.styleMask = [.titled, .closable]
+            newWindow.isReleasedWhenClosed = false
+            newWindow.setContentSize(NSSize(width: 460, height: 500))
+            newWindow.center()
+            aboutWindow = newWindow
+            window = newWindow
         }
+
+        NSApp.activate(ignoringOtherApps: true)
+        window.makeKeyAndOrderFront(nil)
     }
 
     @objc private func quitApp() {

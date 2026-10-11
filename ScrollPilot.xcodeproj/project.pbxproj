@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		F6576BE2307A71EA00B7D142 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = F6576BE1307A71EA00B7D142 /* README.md */; };
+		F6576BE4307BAFB900B7D142 /* AboutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6576BE3307BAFB900B7D142 /* AboutView.swift */; };
+		F6576BE8307BB22B00B7D142 /* LgkLogo.svg in Resources */ = {isa = PBXBuildFile; fileRef = F6576BE7307BB22B00B7D142 /* LgkLogo.svg */; };
 		F6DACF1230793C8A00941337 /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = F6DACF1130793C8A00941337 /* Localizable.xcstrings */; };
 		F6DACF1630794D5D00941337 /* ScrollPilot.icon in Resources */ = {isa = PBXBuildFile; fileRef = F6DACF1530794D5D00941337 /* ScrollPilot.icon */; };
 		F6DACF1830794F3500941337 /* ScrollPilot.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6DACF1730794F3500941337 /* ScrollPilot.swift */; };
@@ -17,6 +19,8 @@
 /* Begin PBXFileReference section */
 		000000000000000000000120 /* ScrollPilot.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ScrollPilot.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F6576BE1307A71EA00B7D142 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		F6576BE3307BAFB900B7D142 /* AboutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutView.swift; sourceTree = "<group>"; };
+		F6576BE7307BB22B00B7D142 /* LgkLogo.svg */ = {isa = PBXFileReference; lastKnownFileType = text; path = LgkLogo.svg; sourceTree = "<group>"; };
 		F6DACF1130793C8A00941337 /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
 		F6DACF1530794D5D00941337 /* ScrollPilot.icon */ = {isa = PBXFileReference; lastKnownFileType = folder.iconcomposer.icon; path = ScrollPilot.icon; sourceTree = "<group>"; };
 		F6DACF1730794F3500941337 /* ScrollPilot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScrollPilot.swift; sourceTree = "<group>"; };
@@ -35,11 +39,13 @@
 		000000000000000000000001 = {
 			isa = PBXGroup;
 			children = (
+				F6576BE7307BB22B00B7D142 /* LgkLogo.svg */,
 				F6DACF1130793C8A00941337 /* Localizable.xcstrings */,
 				F6DACF1530794D5D00941337 /* ScrollPilot.icon */,
 				F6DACF1730794F3500941337 /* ScrollPilot.swift */,
 				F6DACF31307A4C5A00941337 /* InputDeviceMonitor.swift */,
 				F6576BE1307A71EA00B7D142 /* README.md */,
+				F6576BE3307BAFB900B7D142 /* AboutView.swift */,
 				000000000000000000000020 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -109,6 +115,7 @@
 		000000000000000140000000 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			files = (
+				F6576BE8307BB22B00B7D142 /* LgkLogo.svg in Resources */,
 				F6576BE2307A71EA00B7D142 /* README.md in Resources */,
 				F6DACF1230793C8A00941337 /* Localizable.xcstrings in Resources */,
 				F6DACF1630794D5D00941337 /* ScrollPilot.icon in Resources */,
@@ -121,6 +128,7 @@
 			isa = PBXSourcesBuildPhase;
 			files = (
 				F6DACF1830794F3500941337 /* ScrollPilot.swift in Sources */,
+				F6576BE4307BAFB900B7D142 /* AboutView.swift in Sources */,
 				F6DACF32307A4C5A00941337 /* InputDeviceMonitor.swift in Sources */,
 			);
 		};

@@ -1,6 +1,48 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
+    "·" : {
+
+    },
+    "About ScrollPilot" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Über ScrollPilot"
+          }
+        }
+      }
+    },
+    "Acknowledgements" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Danksagungen"
+          }
+        }
+      }
+    },
+    "Bootstrap Icons" : {
+
+    },
+    "Build" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Build"
+          }
+        }
+      }
+    },
+    "ChatGPT" : {
+
+    },
+    "Codex" : {
+
+    },
     "Could not access input devices." : {
       "extractionState" : "stale",
       "localizations" : {
@@ -42,6 +84,9 @@
           }
         }
       }
+    },
+    "GitHub" : {
+
     },
     "Global shortcut could not be registered." : {
       "localizations" : {
@@ -90,6 +135,26 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Bei Anmeldung starten"
+          }
+        }
+      }
+    },
+    "MIT License" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "MIT-Lizenz"
+          }
+        }
+      }
+    },
+    "Most of ScrollPilot’s code was created with AI assistance from ChatGPT and Codex." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Der Großteil des ScrollPilot-Codes wurde mit KI-Unterstützung von ChatGPT und Codex erstellt."
           }
         }
       }
@@ -143,6 +208,27 @@
         }
       }
     },
+    "Personal logo" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Persönliches Logo"
+          }
+        }
+      }
+    },
+    "Personal logo placeholder" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Platzhalter für persönliches Logo"
+          }
+        }
+      }
+    },
     "Quit ScrollPilot" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -187,6 +273,9 @@
         }
       }
     },
+    "ScrollPilot" : {
+
+    },
     "Switch automatically" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -194,6 +283,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Automatisch umschalten"
+          }
+        }
+      }
+    },
+    "The app icon uses an icon from Bootstrap Icons." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Das App-Symbol verwendet ein Symbol aus Bootstrap Icons."
           }
         }
       }
@@ -215,6 +314,36 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Natürliches Scrollen umschalten"
+          }
+        }
+      }
+    },
+    "Unknown" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unbekannt"
+          }
+        }
+      }
+    },
+    "Version" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Version"
+          }
+        }
+      }
+    },
+    "Website" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Webseite"
           }
         }
       }
