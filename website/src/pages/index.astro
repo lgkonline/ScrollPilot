@@ -1,4 +1,36 @@
 ---
-import MarketingPage from "../components/MarketingPage.astro";
+const base = import.meta.env.BASE_URL.replace(/\/$/, "");
 ---
-<MarketingPage locale="en" />
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>ScrollPilot — Choose your language / Sprache wählen</title>
+    <link rel="alternate" hreflang="en" href={new URL(`${base}/en/`, Astro.site).href} />
+    <link rel="alternate" hreflang="de" href={new URL(`${base}/de/`, Astro.site).href} />
+    <link rel="alternate" hreflang="x-default" href={new URL(`${base}/`, Astro.site).href} />
+    <script is:inline define:vars={{ base }}>
+      let preferred;
+      try {
+        preferred = localStorage.getItem('scrollpilot-language');
+      } catch {
+        // Browser language detection also works without storage.
+      }
+      if (preferred !== 'en' && preferred !== 'de') {
+        preferred = (navigator.languages?.length ? navigator.languages : [navigator.language])
+          .map((language) => language.toLowerCase().split('-')[0])
+          .find((language) => language === 'en' || language === 'de') || 'en';
+      }
+      location.replace(`${base}/${preferred}/${location.search}${location.hash}`);
+    </script>
+  </head>
+  <body>
+    <main>
+      <h1>ScrollPilot</h1>
+      <p>Choose your language / <span lang="de">Sprache wählen</span></p>
+      <a href={`${base}/en/`} lang="en" hreflang="en">English</a>
+      <a href={`${base}/de/`} lang="de" hreflang="de">Deutsch</a>
+    </main>
+  </body>
+</html>

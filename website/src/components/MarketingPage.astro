@@ -34,7 +34,7 @@ const { locale }: Props = Astro.props;
 const t = translator(locale);
 const base = import.meta.env.BASE_URL.replace(/\/$/, "");
 const languageUrls: Record<Locale, string> = {
-  en: `${base}/`,
+  en: `${base}/en/`,
   de: `${base}/de/`,
 };
 const canonical = new URL(languageUrls[locale], Astro.site).href;
@@ -116,7 +116,7 @@ const faqs = (
     <link
       rel="alternate"
       hreflang="x-default"
-      href={new URL(languageUrls.en, Astro.site).href}
+      href={new URL(`${base}/`, Astro.site).href}
     />
     <meta property="og:locale" content={locale === "de" ? "de_DE" : "en_US"} />
     <meta
@@ -529,6 +529,15 @@ const faqs = (
       </div>
     </footer>
     <script>
+      document.querySelectorAll<HTMLAnchorElement>('.language-switch a').forEach((link) => {
+        link.addEventListener('click', () => {
+          try {
+            localStorage.setItem('scrollpilot-language', link.lang);
+          } catch {
+            // Navigation still works when storage is unavailable.
+          }
+        });
+      });
       const reduceMotion = window.matchMedia(
         "(prefers-reduced-motion: reduce)",
       );
