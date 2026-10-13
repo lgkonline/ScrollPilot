@@ -22,15 +22,22 @@ struct AboutView: View {
             acknowledgements
         }
         .padding(32)
-        .frame(width: 460, height: 500)
+        .frame(width: 460, height: 450)
     }
 
     private var header: some View {
         VStack(spacing: 12) {
-            personalLogo
-
-            Text("ScrollPilot")
-                .font(.largeTitle.bold())
+            Image(nsImage: NSApp.applicationIconImage)
+                .resizable()
+                .scaledToFit()
+                .frame(width: 82, height: 82)
+                .accessibilityHidden(true)
+            
+            HStack(spacing: 4) {
+                personalLogo
+                Text("ScrollPilot")
+                    .font(.largeTitle.bold())
+            }
 
             HStack(spacing: 5) {
                 Text("Version")
@@ -52,7 +59,7 @@ struct AboutView: View {
                 .resizable()
                 .scaledToFit()
                 .foregroundStyle(.primary)
-                .frame(width: 64, height: 64)
+                .frame(width: 38, height: 38)
                 .accessibilityLabel("Personal logo")
         }
     }
@@ -84,22 +91,11 @@ struct AboutView: View {
                 )
                 ExternalLink(
                     title: "MIT License",
-                    urlString: "https://github.com/twbs/icons/blob/main/LICENSE.md"
+                    urlString: "https://github.com/twbs/icons/blob/main/LICENSE"
                 )
             }
 
-            Text("Most of ScrollPilot’s code was created with AI assistance from ChatGPT and Codex.")
-
-            HStack(spacing: 16) {
-                ExternalLink(
-                    title: "ChatGPT",
-                    urlString: "https://chatgpt.com"
-                )
-                ExternalLink(
-                    title: "Codex",
-                    urlString: "https://openai.com/codex"
-                )
-            }
+            Text("Most of ScrollPilot’s code was created with AI assistance.")
         }
         .frame(maxWidth: .infinity, alignment: .leading)
     }

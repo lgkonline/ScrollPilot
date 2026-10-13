@@ -37,23 +37,6 @@
         }
       }
     },
-    "ChatGPT" : {
-
-    },
-    "Codex" : {
-
-    },
-    "Could not access input devices." : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "machine_translated",
-            "value" : "Eingabegeräte konnten nicht überwacht werden."
-          }
-        }
-      }
-    },
     "Could not read setting." : {
       "extractionState" : "manual",
       "localizations" : {
@@ -149,12 +132,13 @@
         }
       }
     },
-    "Most of ScrollPilot’s code was created with AI assistance from ChatGPT and Codex." : {
+    "Most of ScrollPilot’s code was created with AI assistance." : {
+      "extractionState" : "manual",
       "localizations" : {
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Der Großteil des ScrollPilot-Codes wurde mit KI-Unterstützung von ChatGPT und Codex erstellt."
+            "value" : "Vieles vom ScrollPilots Code wurde mit Hilfe von KI erstellt."
           }
         }
       }
@@ -214,17 +198,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Persönliches Logo"
-          }
-        }
-      }
-    },
-    "Personal logo placeholder" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Platzhalter für persönliches Logo"
           }
         }
       }
