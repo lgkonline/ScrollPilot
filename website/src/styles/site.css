@@ -1,4 +1,126 @@
-@layer base, custom;
+@layer base, custom, appearance;
+
+@layer appearance {
+  @media (prefers-color-scheme: dark) {
+    :root {
+      color-scheme: dark;
+      --paper: #191c19;
+      --ink: #eceee7;
+      --muted: #b0b6a8;
+      --brand: #82b5ff;
+      --line: #3d4439;
+      --surface: #242a22;
+      --surface-raised: #30382c;
+      --accent-ink: #b5c99c;
+    }
+    .skip-link,
+    .device-label,
+    .demo-window,
+    .demo-status {
+      background: var(--surface);
+    }
+    .nav-download,
+    .language-switch a[aria-current="page"] {
+      color: var(--paper);
+    }
+    .primary-button,
+    .primary-button:hover {
+      color: #14243b;
+    }
+    .orbit,
+    .device-label,
+    .switch-toast,
+    .feature-card,
+    .feature-bottom,
+    .device-picker,
+    .demo-window,
+    .demo-toolbar,
+    .demo-status,
+    .closing {
+      border-color: var(--line);
+    }
+    .device-label strong,
+    .art-caption,
+    .benefit-strip .container,
+    h2 > span,
+    .device-picker button,
+    .demo-toolbar,
+    .demo-tag,
+    .scroll-indicator,
+    .step-number,
+    .faq-list summary span,
+    .closing p,
+    footer > span {
+      color: var(--muted);
+    }
+    .benefit-strip svg,
+    .playground-copy h2 span,
+    .step-number span,
+    .toast-check {
+      color: var(--accent-ink);
+    }
+    .status-dot,
+    .mini-dot {
+      background: #a4c68d;
+    }
+    .mouse-label .mini-dot {
+      background: var(--brand);
+    }
+    .status-dot {
+      box-shadow: 0 0 0 4px #a4c68d18;
+    }
+    .switch-toast {
+      background: #242a22e8;
+      box-shadow: 0 15px 40px #0003;
+    }
+    .feature-card,
+    .playground-section,
+    .closing {
+      background: var(--surface);
+    }
+    .feature-icon,
+    .feature-bottom b,
+    .demo-status strong {
+      background: var(--surface-raised);
+      color: var(--accent-ink);
+    }
+    .brand-card {
+      background: color-mix(in srgb, var(--brand) 7%, var(--paper));
+      border-color: color-mix(in srgb, var(--brand) 25%, var(--paper));
+    }
+    .brand-card .feature-icon,
+    .brand-card .feature-bottom b {
+      background: color-mix(in srgb, var(--brand) 15%, var(--paper));
+      color: var(--brand);
+    }
+    .brand-card .feature-bottom {
+      border-color: color-mix(in srgb, var(--brand) 20%, var(--paper));
+    }
+    .device-picker button[aria-pressed="true"] {
+      background: var(--surface-raised);
+      color: var(--ink);
+    }
+    .demo-toolbar {
+      background: #20251e;
+    }
+    .window-dots i,
+    .demo-lines i {
+      background: #48523f;
+    }
+    .demo-landscape {
+      background: #323b2d;
+    }
+    .hill-back {
+      background: #566548;
+    }
+    .hill-front {
+      background: #3d4c33;
+    }
+    .closing-spark {
+      color: #48583b;
+    }
+  }
+}
 
 @layer base {
   *,
@@ -43,6 +165,7 @@
 
 @layer custom {
   :root {
+    color-scheme: light;
     --paper: #f7f6f2;
     --ink: #292c29;
     --muted: #656960;
