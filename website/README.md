@@ -1,6 +1,6 @@
 # ScrollPilot website
 
-Static Astro site using Bootstrap 6.0.0-alpha.1, compiled from Sass through Astro’s Vite pipeline. Node.js 22.12 or newer is required.
+Static Astro site using custom CSS, bundled through Astro’s Vite pipeline. Icons come from the separate `react-bootstrap-icons` package; Bootstrap CSS and JavaScript are not used. Node.js 22.12 or newer is required.
 
 ```sh
 cd website

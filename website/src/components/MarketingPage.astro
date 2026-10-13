@@ -1,5 +1,5 @@
 ---
-import "../styles/site.scss";
+import "../styles/site.css";
 import { translator, type Locale } from "../i18n";
 import {
   Apple,
@@ -138,7 +138,7 @@ const faqs = (
           >GitHub <ArrowUpRight aria-hidden /></a
         >
       </nav>
-      <a href={releases} class="btn-solid nav-download"
+      <a href={releases} class="nav-download"
         >{t("Get ScrollPilot")} <ArrowUpRight aria-hidden /></a
       >
       <div class="language-switch" role="group" aria-label={t("Language")}>
@@ -161,7 +161,7 @@ const faqs = (
     <main id="main">
       <section class="hero container">
         <div class="hero-copy">
-          <div class="eyebrow text-uppercase">
+          <div class="eyebrow">
             <span class="status-dot"></span>
             {t("The scrolling fix macOS should have.")}
           </div>
@@ -177,7 +177,7 @@ const faqs = (
             {t("Apple should let you have both. ScrollPilot makes it happen.")}
           </p>
           <div class="hero-actions">
-            <a href={releases} class="btn-solid primary-button"
+            <a href={releases} class="primary-button"
               ><Download aria-hidden />{t("Download for macOS")}</a
             ><a href="#playground" class="text-link"
               >{t("Take it for a scroll")} <ArrowDownRight aria-hidden /></a
@@ -268,8 +268,8 @@ const faqs = (
             }
           </p>
         </div>
-        <div class="row g-4 feature-grid">
-          <div class="col-md-4 reveal">
+        <div class="feature-grid">
+          <div class="reveal">
             <article class="feature-card">
               <span class="feature-icon"><ArrowUpRight aria-hidden /></span><h3>
                 {t("Natural stays natural.")}
@@ -284,7 +284,7 @@ const faqs = (
               </div>
             </article>
           </div>
-          <div class="col-md-4 reveal">
+          <div class="reveal">
             <article class="feature-card brand-card">
               <span class="feature-icon"><ArrowDownLeft aria-hidden /></span><h3
               >
@@ -302,7 +302,7 @@ const faqs = (
               </div>
             </article>
           </div>
-          <div class="col-md-4 reveal">
+          <div class="reveal">
             <article class="feature-card">
               <span class="feature-icon"><Asterisk aria-hidden /></span><h3>
                 {t("The missing little fix.")}
@@ -393,8 +393,8 @@ const faqs = (
             {t("A small setup for a much nicer every day.")}
           </p>
         </div>
-        <div class="row g-4 steps">
-          <div class="col-md-4 reveal">
+        <div class="steps">
+          <div class="reveal">
             <span class="step-number"
               >01 <span><ArrowDown aria-hidden /></span></span
             ><h3>
@@ -409,7 +409,7 @@ const faqs = (
               >{t("Get ScrollPilot")} <ArrowUpRight aria-hidden /></a
             >
           </div>
-          <div class="col-md-4 reveal">
+          <div class="reveal">
             <span class="step-number"
               >02 <span><Apple aria-hidden /></span></span
             ><h3>
@@ -422,7 +422,7 @@ const faqs = (
               }
             </p>
           </div>
-          <div class="col-md-4 reveal">
+          <div class="reveal">
             <span class="step-number"
               >03 <span><Asterisk aria-hidden /></span></span
             ><h3>
@@ -466,7 +466,7 @@ const faqs = (
         ><span class="eyebrow">{t("A SMALL APP FOR A macOS OVERSIGHT.")}</span
         ><h2>{t("Your devices.")}<br />{t("No compromise.")}</h2><a
           href={releases}
-          class="btn-solid primary-button"
+          class="primary-button"
           >{t("Download ScrollPilot")} <ArrowUpRight aria-hidden /></a
         ><p>{t("Free. Open source. Right in your menu bar.")}</p>
       </section>
