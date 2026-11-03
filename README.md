@@ -16,7 +16,7 @@ That way, you can keep the gesture direction that feels right on each device.
 
 - Automatically switch scrolling direction when using a trackpad or Magic Mouse.
 - Toggle natural scrolling manually from the menu bar.
-- Optionally remap page-navigation gestures from a mouse or trackpad to Option + Left/Right.
+- Optionally remap page-navigation gestures to Option + Left/Right while Windows App is active.
 - Optionally launch ScrollPilot when you log in.
 
 ## Download
@@ -40,9 +40,13 @@ tccutil reset ListenEvent io.lgk.ScrollPilot
 
 ## Navigation gesture remapping
 
-Enable **Remap navigation gestures to ⌥← / ⌥→** in the menu to send
-Option + Left for a left navigation swipe and Option + Right for a right
-navigation swipe to the active application, including a Windows remote client.
+Enable **Remap navigation gestures to ⌥← / ⌥→ in Windows App** in the menu
+to send Option + Left for a left navigation swipe and Option + Right for a right
+navigation swipe only while Windows App is in the foreground.
+The app is identified by its bundle ID, `com.microsoft.rdc.macos`, even if its
+filename is `Microsoft Remote Desktop.app`. This applies to the entire app,
+including its connection overview. In other apps, navigation gestures retain
+their native behavior.
 The option is off by default, persists across launches, and works independently
 of automatic scrolling-direction switching.
 
@@ -71,7 +75,7 @@ sources in a temporary package and does not send input to other applications.
 Build the app in Xcode as well.
 
 For hardware validation, check both swipe directions in the remote session,
-one navigation per swipe, native navigation when disabled, both natural-scroll
+one navigation per swipe, native navigation in other apps and when disabled, both natural-scroll
 settings, and switching between mouse and trackpad. Also check restart,
 revoked Accessibility access, and independent automatic-scroll switching.
 

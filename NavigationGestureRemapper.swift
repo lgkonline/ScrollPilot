@@ -1,4 +1,4 @@
-import Foundation
+import AppKit
 import ApplicationServices
 import Carbon.HIToolbox
 import IOKit.hidsystem
@@ -106,7 +106,8 @@ final class NavigationGestureRemapper {
               let phaseField = CGEventField(rawValue: 132) else {
             return Unmanaged.passUnretained(event)
         }
-        let decision = decoder.process(
+        let decision = navigationDecision(
+            frontmostBundleIdentifier: NSWorkspace.shared.frontmostApplication?.bundleIdentifier,
             eventType: type.rawValue,
             hidType: event.getIntegerValueField(hidField),
             swipeMask: event.getIntegerValueField(directionField),
@@ -122,6 +123,23 @@ final class NavigationGestureRemapper {
             for keyEvent in events { keyEvent.post(tap: .cghidEventTap) }
         }
         return decision.suppress ? nil : Unmanaged.passUnretained(event)
+    }
+
+    func navigationDecision(
+        frontmostBundleIdentifier: String?,
+        eventType: UInt32,
+        hidType: Int64,
+        swipeMask: Int64,
+        phase: Int64
+    ) -> NavigationGestureDecoder.Decision {
+        // Match the bundle identity, not the app's filename or localized name.
+        guard frontmostBundleIdentifier == "com.microsoft.rdc.macos" else {
+            decoder.reset()
+            return .init()
+        }
+        return decoder.process(
+            eventType: eventType, hidType: hidType, swipeMask: swipeMask, phase: phase
+        )
     }
 
     private static func keyEvents(for direction: NavigationGestureDecoder.Direction) -> [CGEvent]? {

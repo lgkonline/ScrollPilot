@@ -266,11 +266,18 @@
       }
     },
     "Remap navigation gestures to ⌥← / ⌥→" : {
+      "extractionState" : "extracted_with_value",
       "localizations" : {
         "de" : {
           "stringUnit" : {
             "state" : "machine_translated",
-            "value" : "Navigationsgesten auf ⌥← / ⌥→ umlegen"
+            "value" : "Navigationsgesten in Windows App auf ⌥← / ⌥→ umlegen"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Remap navigation gestures to ⌥← / ⌥→ in Windows App"
           }
         }
       }

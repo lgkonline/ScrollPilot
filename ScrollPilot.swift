@@ -210,7 +210,10 @@ final class ScrollPilotController {
 
         menu.addItem(NSMenuItem.separator())
         gestureRemappingMenuItem = NSMenuItem(
-            title: String(localized: "Remap navigation gestures to ⌥← / ⌥→"),
+            title: String(
+                localized: "Remap navigation gestures to ⌥← / ⌥→",
+                defaultValue: "Remap navigation gestures to ⌥← / ⌥→ in Windows App"
+            ),
             action: #selector(toggleGestureRemapping),
             keyEquivalent: ""
         )

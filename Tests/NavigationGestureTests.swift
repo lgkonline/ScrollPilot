@@ -4,6 +4,50 @@ import Testing
 @testable import NavigationGestures
 
 struct NavigationGestureTests {
+    @Test func windowsAppReceivesNavigationShortcuts() {
+        let remapper = NavigationGestureRemapper()
+        for (mask, direction): (Int64, NavigationGestureDecoder.Direction) in [(4, .left), (8, .right)] {
+            #expect(remapper.navigationDecision(
+                frontmostBundleIdentifier: "com.microsoft.rdc.macos",
+                eventType: 29, hidType: 16, swipeMask: mask, phase: 0
+            ) == .init(suppress: true, direction: direction))
+        }
+    }
+
+    @Test func otherAndUnknownAppsKeepNativeGestures() {
+        let remapper = NavigationGestureRemapper()
+        for identifier: String? in [nil, "", "com.apple.Safari", "Windows App", "Microsoft Remote Desktop.app", "com.microsoft.rdc.macos.helper"] {
+            for phase: Int64 in [0, 1, 2, 4, 8] {
+                #expect(remapper.navigationDecision(
+                    frontmostBundleIdentifier: identifier,
+                    eventType: 29, hidType: 16, swipeMask: 4, phase: phase
+                ) == .init())
+            }
+        }
+    }
+
+    @Test func leavingWindowsAppResetsGestureState() {
+        for otherApp: String? in ["com.apple.Safari", nil] {
+            let remapper = NavigationGestureRemapper()
+            #expect(remapper.navigationDecision(
+                frontmostBundleIdentifier: "com.microsoft.rdc.macos",
+                eventType: 29, hidType: 16, swipeMask: 4, phase: 1
+            ).direction == .left)
+            #expect(remapper.navigationDecision(
+                frontmostBundleIdentifier: otherApp,
+                eventType: 29, hidType: 16, swipeMask: 4, phase: 2
+            ) == .init())
+            #expect(remapper.navigationDecision(
+                frontmostBundleIdentifier: "com.microsoft.rdc.macos",
+                eventType: 29, hidType: 16, swipeMask: 0, phase: 4
+            ) == .init())
+            #expect(remapper.navigationDecision(
+                frontmostBundleIdentifier: "com.microsoft.rdc.macos",
+                eventType: 29, hidType: 16, swipeMask: 8, phase: 1
+            ).direction == .right)
+        }
+    }
+
     @Test func horizontalDirections() {
         var decoder = NavigationGestureDecoder()
         #expect(decoder.process(eventType: 29, hidType: 16, swipeMask: 4, phase: 0)
