@@ -121,6 +121,14 @@ final class ScrollPilotController {
     
     private let inputMonitor = InputDeviceMonitor()
     private let settingsService = ScrollingSettingsService()
+    private let gestureRemapper = NavigationGestureRemapper()
+    private var gestureRemappingMenuItem: NSMenuItem!
+    private var gestureStatusMenuItem: NSMenuItem!
+    private var accessibilitySettingsMenuItem: NSMenuItem!
+    private var gestureRemappingEnabled: Bool {
+        get { UserDefaults.standard.bool(forKey: "navigationGestureRemappingEnabled") }
+        set { UserDefaults.standard.set(newValue, forKey: "navigationGestureRemappingEnabled") }
+    }
     private let automaticSwitchingKey = "automaticSwitchingEnabled"
     private var automaticSwitchingMenuItem: NSMenuItem!
     private var inputMonitoringSettingsMenuItem: NSMenuItem!
@@ -143,6 +151,10 @@ final class ScrollPilotController {
 
     init() {
         setupMenuBar()
+        gestureRemapper.onFailure = { [weak self] in
+            self?.updateGestureRemappingStatus(.failed)
+        }
+        restoreGestureRemapping()
         refreshSetting()
 
         if automaticSwitchingEnabled {
@@ -196,7 +208,29 @@ final class ScrollPilotController {
         inputMonitoringSettingsMenuItem.target = self
         menu.addItem(inputMonitoringSettingsMenuItem)
 
-        
+        menu.addItem(NSMenuItem.separator())
+        gestureRemappingMenuItem = NSMenuItem(
+            title: String(localized: "Remap navigation gestures to ⌥← / ⌥→"),
+            action: #selector(toggleGestureRemapping),
+            keyEquivalent: ""
+        )
+        gestureRemappingMenuItem.target = self
+        menu.addItem(gestureRemappingMenuItem)
+
+        gestureStatusMenuItem = NSMenuItem(title: "", action: nil, keyEquivalent: "")
+        gestureStatusMenuItem.isHidden = true
+        menu.addItem(gestureStatusMenuItem)
+
+        accessibilitySettingsMenuItem = NSMenuItem(
+            title: String(localized: "Open Accessibility Settings…"),
+            action: #selector(openAccessibilitySettings),
+            keyEquivalent: ""
+        )
+        accessibilitySettingsMenuItem.target = self
+        accessibilitySettingsMenuItem.isHidden = true
+        menu.addItem(accessibilitySettingsMenuItem)
+        menu.addItem(NSMenuItem.separator())
+
         launchAtLoginMenuItem = NSMenuItem(
             title: String(localized: LocalizedStringResource.launchAtLogin),
             action: #selector(toggleLaunchAtLogin),
@@ -238,6 +272,57 @@ final class ScrollPilotController {
         statusItem.menu = menu
     }
     
+    @objc private func toggleGestureRemapping() {
+        gestureRemappingEnabled.toggle()
+        if gestureRemappingEnabled && !NavigationGestureRemapper.hasAccess {
+            NavigationGestureRemapper.requestAccess()
+        }
+        restoreGestureRemapping()
+    }
+
+    private func restoreGestureRemapping() {
+        guard gestureRemappingEnabled else {
+            gestureRemapper.stop()
+            gestureRemappingMenuItem.state = .off
+            gestureStatusMenuItem.isHidden = true
+            accessibilitySettingsMenuItem.isHidden = true
+            return
+        }
+        updateGestureRemappingStatus(gestureRemapper.start())
+    }
+
+    private func updateGestureRemappingStatus(_ result: NavigationGestureRemapper.StartResult) {
+        gestureRemappingMenuItem.state = gestureRemappingEnabled ? .on : .off
+        switch result {
+        case .started:
+            gestureStatusMenuItem.isHidden = true
+            accessibilitySettingsMenuItem.isHidden = true
+        case .accessibilityRequired:
+            gestureStatusMenuItem.title = String(
+                localized: "Gesture remapping needs Accessibility access. Grant access, then reload."
+            )
+            gestureStatusMenuItem.isHidden = false
+            accessibilitySettingsMenuItem.isHidden = false
+        case .failed:
+            gestureStatusMenuItem.title = String(
+                localized: "Gesture remapping stopped. Reload to try again."
+            )
+            gestureStatusMenuItem.isHidden = false
+            accessibilitySettingsMenuItem.isHidden = NavigationGestureRemapper.hasAccess
+        }
+    }
+
+    @objc private func openAccessibilitySettings() {
+        if let url = URL(
+            string: "x-apple.systempreferences:com.apple.preference.security?Privacy_Accessibility"
+        ), NSWorkspace.shared.open(url) {
+            return
+        }
+        if let url = URL(string: "x-apple.systempreferences:com.apple.preference.security") {
+            NSWorkspace.shared.open(url)
+        }
+    }
+
     @objc private func toggleScrollingMenuAction() {
         toggleScrolling()
     }
@@ -380,6 +465,7 @@ final class ScrollPilotController {
     }
 
     @objc private func refreshMenuAction() {
+        restoreGestureRemapping()
         refreshSetting()
     }
     

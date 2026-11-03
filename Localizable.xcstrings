@@ -68,6 +68,26 @@
         }
       }
     },
+    "Gesture remapping needs Accessibility access. Grant access, then reload." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "machine_translated",
+            "value" : "Die Gestenumbelegung benötigt Zugriff auf „Bedienungshilfen“. Gewähre Zugriff und wähle danach „Einstellung neu einlesen“."
+          }
+        }
+      }
+    },
+    "Gesture remapping stopped. Reload to try again." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "machine_translated",
+            "value" : "Die Gestenumbelegung wurde gestoppt. Wähle zum erneuten Start „Einstellung neu einlesen“."
+          }
+        }
+      }
+    },
     "GitHub" : {
 
     },
@@ -171,6 +191,16 @@
         }
       }
     },
+    "Open Accessibility Settings…" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "machine_translated",
+            "value" : "Einstellungen für „Bedienungshilfen“ öffnen …"
+          }
+        }
+      }
+    },
     "Open Input Monitoring Settings…" : {
       "localizations" : {
         "de" : {
@@ -231,6 +261,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Einstellung neu einlesen"
+          }
+        }
+      }
+    },
+    "Remap navigation gestures to ⌥← / ⌥→" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "machine_translated",
+            "value" : "Navigationsgesten auf ⌥← / ⌥→ umlegen"
           }
         }
       }
